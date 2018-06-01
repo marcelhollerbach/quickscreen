@@ -1,4 +1,4 @@
-project('YOUR_MODULE', 'c')
+project('quickscreen', 'c')
 
 e = dependency('enlightenment')
 elm = dependency('elementary')
