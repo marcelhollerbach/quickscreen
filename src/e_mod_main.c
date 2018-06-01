@@ -1,5 +1,5 @@
 #include "e.h"
-#include "../config.h"/* module setup */
+#include "quickscreen.h"
 
 
 static E_Action *act;
@@ -26,7 +26,9 @@ e_modapi_init(E_Module *m)
 
   act = e_action_add("qs_key");
   e_action_predef_name_set("Quickscreen", "Toogle Screenlayout Popup", "qs_key", NULL, NULL, 0);
-  act->func.go = qs_key; 
+  act->func.go = qs_key;
+
+  e_configure_registry_item_add("extensions/screen2", 0, "Screen Settings2", NULL, NULL, quickscreen_settings);
 
   return m;
 }
@@ -35,10 +37,12 @@ E_API int
 e_modapi_shutdown(E_Module *m EINA_UNUSED)
 {
    /* your code-shutdown */
-	
+
    E_FREE_FUNC(act, e_action_del);
    e_action_predef_name_del("Quickscreen", "qs_key");
-	
+
+   e_configure_registry_item_del("extensions/screen2");
+
    return 1;
 }
 

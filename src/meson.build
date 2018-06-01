@@ -1,7 +1,14 @@
 e = dependency('enlightenment')
 
+src = files([
+  'legacy_config.c',
+  'e_mod_main.c',
+  'ui_advanced_config.c',
+  'ui_wizard_config.c'
+])
+
 module = shared_module('module',
-                       'e_mod_main.c',
+                       src,
                        dependencies : [e, elm],
                        install_dir: install_dir,
                        install: true,
