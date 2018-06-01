@@ -13,10 +13,15 @@ wizard_config_create(Evas_Object *win)
 {
    Local_Data *pd = E_NEW(Local_Data, 1);
 
-   Evas_Object *o = elm_gengrid_add(win);
-   evas_object_size_hint_weight_set(o, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-   evas_object_size_hint_align_set(o, EVAS_HINT_FILL, EVAS_HINT_FILL);
-   evas_object_data_set(o, "__data", pd);
+//    Evas_Object *o = elm_gengrid_add(win);
+//    evas_object_size_hint_weight_set(o, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+//    evas_object_size_hint_align_set(o, EVAS_HINT_FILL, EVAS_HINT_FILL);
+	
+	
+	
+	
+	
+   evas_object_data_set(popup, "__data", pd);
 
    return o;
 }
