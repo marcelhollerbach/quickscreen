@@ -1,6 +1,8 @@
 #include "e.h"
 #include "../config.h"/* module setup */
 
+int _quickscreen_log_domain = -1;
+
 E_API E_Module_Api e_modapi =
 {
    E_MODULE_API_VERSION,
@@ -10,8 +12,7 @@ E_API E_Module_Api e_modapi =
 E_API void *
 e_modapi_init(E_Module *m)
 {
-  /* your code-init */
-
+  _quickscreen_log_domain = eina_log_domain_register("quciscreen", "red");
   return m;
 }
 
