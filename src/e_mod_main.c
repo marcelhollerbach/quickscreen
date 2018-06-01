@@ -12,7 +12,7 @@ E_API E_Module_Api e_modapi =
 E_API void *
 e_modapi_init(E_Module *m)
 {
-  _quickscreen_log_domain = eina_log_domain_register("quciscreen", "red");
+  _quickscreen_log_domain = eina_log_domain_register("quickscreen", "red");
   return m;
 }
 
