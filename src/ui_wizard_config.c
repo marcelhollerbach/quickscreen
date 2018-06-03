@@ -103,6 +103,7 @@ _content_modes(Evas_Object *parent)
 		
 	ic = elm_icon_add(popup);
 	snprintf(buf, sizeof(buf), "%s/images/clone.png", PACKAGE_DATA_DIR);
+	elm_image_file_set(ic, buf, NULL);
 	evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(321), ELM_SCALE_SIZE(124));
 	evas_object_size_hint_weight_set(ic, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ic, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -116,6 +117,7 @@ _content_modes(Evas_Object *parent)
 		
 	ic = elm_icon_add(popup);
 	snprintf(buf, sizeof(buf), "%s/images/extend.png", PACKAGE_DATA_DIR);
+	elm_image_file_set(ic, buf, NULL);
 	evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(321), ELM_SCALE_SIZE(124));
 	evas_object_size_hint_weight_set(ic, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ic, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -130,6 +132,7 @@ _content_modes(Evas_Object *parent)
 		
 	ic = elm_icon_add(popup);
 	snprintf(buf, sizeof(buf), "%s/images/left.png", PACKAGE_DATA_DIR);
+	elm_image_file_set(ic, buf, NULL);
 	evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(321), ELM_SCALE_SIZE(124));
 	evas_object_size_hint_weight_set(ic, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ic, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -143,6 +146,7 @@ _content_modes(Evas_Object *parent)
 		
 	ic = elm_icon_add(popup);
 	snprintf(buf, sizeof(buf), "%s/images/right.png", PACKAGE_DATA_DIR);
+	elm_image_file_set(ic, buf, NULL);
 	evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(321), ELM_SCALE_SIZE(124));
 	evas_object_size_hint_weight_set(ic, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 	evas_object_size_hint_align_set(ic, EVAS_HINT_FILL, EVAS_HINT_FILL);
