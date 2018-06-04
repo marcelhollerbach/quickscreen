@@ -201,7 +201,13 @@ _exit_nf(void *data, Evas_Object *obj EINA_UNUSED, void *event_info EINA_UNUSED)
 	}
 }
 
-
+static void
+_block_clicked_cb(void *data, Evas_Object *obj, void *event_info EINA_UNUSED)
+{
+   if (data)
+     evas_object_del(data);
+   evas_object_del(obj);
+}
 
 
 Evas_Object*
@@ -218,6 +224,10 @@ wizard_config_create(Evas_Object *win)
 	
 	popup = elm_popup_add(win);
    evas_object_layer_set(popup, E_LAYER_POPUP);
+	
+   evas_object_smart_callback_add(popup, "block,clicked", _block_clicked_cb,
+                                  NULL);
+	
 	
 	elm_object_focus_set(popup, EINA_TRUE);
 	Evas_Object *nf, *btn, *btn1, *content;
