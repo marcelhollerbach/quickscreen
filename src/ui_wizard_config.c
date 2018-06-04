@@ -21,6 +21,7 @@ _content_device(Evas_Object *parent)
   Evas_Object *ic;
   Evas_Object *bt;
   Evas_Object *rect;
+  
   char buf[PATH_MAX];
 	
   tb = elm_table_add(parent);
@@ -36,6 +37,7 @@ _content_device(Evas_Object *parent)
 	evas_object_color_set(rect, 51, 153, 255, 255);
 	elm_table_pack(tb, rect, 0, 0, 1, 2);
 	evas_object_show(rect);
+	
 	
 	ic = elm_icon_add(parent);
 	snprintf(buf, sizeof(buf), "%s/images/beamer.png", PACKAGE_DATA_DIR);
@@ -56,6 +58,8 @@ _content_device(Evas_Object *parent)
 	evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);		
 	elm_object_text_set(bt, "BEAMER HDMI-1");
 	elm_table_pack(tb, bt, 1, 0, 1, 2);
+	
+	elm_object_focus_set(bt, EINA_TRUE);
 	evas_object_show(bt);
 		
 	ic = elm_icon_add(parent);
@@ -187,6 +191,15 @@ _page_modes(void *data, Evas_Object *obj EINA_UNUSED, void *event_info EINA_UNUS
 //    elm_object_item_part_text_set(it, "subtitle", "Here is sub-title part!");
 }
 
+void
+_exit_nf(void *data, Evas_Object *obj EINA_UNUSED, void *event_info EINA_UNUSED)
+{
+	if(popup)
+   {
+        evas_object_del(popup);
+        popup = NULL;
+	}
+}
 
 
 
@@ -206,9 +219,9 @@ wizard_config_create(Evas_Object *win)
 	popup = elm_popup_add(win);
    evas_object_layer_set(popup, E_LAYER_POPUP);
 	
-	Evas_Object *nf, *btn, *content;
+	elm_object_focus_set(popup, EINA_TRUE);
+	Evas_Object *nf, *btn, *btn1, *content;
    Elm_Object_Item *it;
-
 
    nf = elm_naviframe_add(popup);
    evas_object_size_hint_weight_set(nf, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -223,9 +236,15 @@ wizard_config_create(Evas_Object *win)
    evas_object_smart_callback_add(btn, "clicked", _page_modes, nf);
 	elm_object_text_set(btn, "Mode");
    evas_object_show(btn);
+	
+   btn1 = elm_button_add(nf);
+   evas_object_size_hint_align_set(btn1, EVAS_HINT_FILL, EVAS_HINT_FILL);
+   evas_object_smart_callback_add(btn1, "clicked", _exit_nf, NULL);
+	elm_object_text_set(btn1, "Exit");
+   evas_object_show(btn1);
 
    content = _content_device(nf);
-   it = elm_naviframe_item_push(nf, "Select Device", NULL, btn, content, NULL);
+   it = elm_naviframe_item_push(nf, "Select Device", btn1, btn, content, NULL);
    evas_object_data_set(nf, "page1", it);
 	
 	
