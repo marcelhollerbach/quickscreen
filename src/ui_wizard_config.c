@@ -11,9 +11,10 @@ typedef struct
 #define SCOPE_DATA(popup)                                                      \
   Local_Data* pd = evas_object_data_get(popup, "__data");
 
-char* device;
-char* lid_id;
-char* id;
+const char* device;
+const char* pdevice;
+const char* lid_id;
+const char* id;
 Evas_Object* popup;
 
 Evas_Object*
@@ -104,42 +105,129 @@ _set_relative(void* data,
   e_randr2_config_apply();
 }
 
+
 void
-_set_extern_power(void* data,
+_set_extern_power_on(void* data EINA_UNUSED,
                   Evas_Object* obj EINA_UNUSED,
                   void* event_info EINA_UNUSED)
 {
 
   E_Config_Randr2_Screen *cs, *cs2;
 
-  printf("DNAME SET DATA: %s\n\n", id);
-  // 	        if (!cs2->id) continue;
+  
+ 
   cs = _screen_config_randr_id_find(id);
+
   if (!cs) {
     cs = calloc(1, sizeof(E_Config_Randr2_Screen));
     cs->id = eina_stringshare_add(id);
     e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs);
   }
+
   if (cs->rel_to)
     eina_stringshare_del(cs->rel_to);
+  
   cs->rel_to = NULL;
   cs->rel_to = eina_stringshare_add(lid_id);
+  
   cs->rotation = 0;
-  //         cs->priority = cs2->priority;
-  //   cs->rel_to = eina_stringshare_add(
-  //     "LVDS-1/"
-  //     "00ffffffffffff00367f2500000000002d0c010490241400eaa8e099574b92251c50540000"
-  //     "0001010101010101010101010101010101403880b4703840403c3c550068c8100000184038"
-  //     "80807138aa408080880068c810000018000000fc004e76696469612044656661756c000000"
-  //     "fc007420466c61742050616e656c00001f");
-  cs->rel_mode = E_RANDR2_RELATIVE_CLONE;
-  //         if (cs->profile) eina_stringshare_del(cs->profile);
-  //         cs->profile = NULL;
-  //         if (cs2->profile) cs->profile = eina_stringshare_add(cs2->profile);
-  //         cs->scale_multiplier = cs2->scale_multiplier;
-  //         printf("APPLY %s .... rel mode %i\n", cs->id, cs->rel_mode);
-  //         cs->enabled = cs2->enabled;
-  cs->enabled = data;
+	
+  cs->priority = 100;
+ 
+	cs->rel_mode = E_RANDR2_RELATIVE_NONE;
+  
+	cs->enabled = EINA_FALSE;
+  
+	 
+  cs2 = _screen_config_randr_id_find(lid_id);
+
+  if (!cs2) {
+    cs2 = calloc(1, sizeof(E_Config_Randr2_Screen));
+    cs2->id = eina_stringshare_add(lid_id);
+    e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs2);
+  }
+
+  if (cs2->rel_to)
+    eina_stringshare_del(cs2->rel_to);
+  
+  cs2->rel_to = NULL;
+  cs2->rel_to = eina_stringshare_add(lid_id);
+  
+  cs2->rotation = 0;
+	
+  cs2->priority = 100;
+  
+	cs2->rel_mode = E_RANDR2_RELATIVE_CLONE;
+  
+	cs2->enabled = EINA_TRUE;
+  
+	
+	
+	
+	
+  e_randr2_config_save();
+  e_randr2_config_apply();
+}
+
+void
+_set_extern_power_off(void* data EINA_UNUSED,
+                  Evas_Object* obj EINA_UNUSED,
+                  void* event_info EINA_UNUSED)
+{
+
+  E_Config_Randr2_Screen *cs, *cs2;
+
+  
+ 
+  cs = _screen_config_randr_id_find(id);
+
+  if (!cs) {
+    cs = calloc(1, sizeof(E_Config_Randr2_Screen));
+    cs->id = eina_stringshare_add(id);
+    e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs);
+  }
+
+  if (cs->rel_to)
+    eina_stringshare_del(cs->rel_to);
+  
+  cs->rel_to = NULL;
+  cs->rel_to = eina_stringshare_add(lid_id);
+  
+  cs->rotation = 0;
+	
+  cs->priority = 100;
+  
+		cs->rel_mode = E_RANDR2_RELATIVE_CLONE;
+  
+	cs->enabled = EINA_TRUE;
+  
+	 
+  cs2 = _screen_config_randr_id_find(lid_id);
+
+  if (!cs2) {
+    cs2 = calloc(1, sizeof(E_Config_Randr2_Screen));
+    cs2->id = eina_stringshare_add(lid_id);
+    e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs2);
+  }
+
+  if (cs2->rel_to)
+    eina_stringshare_del(cs2->rel_to);
+  
+  cs2->rel_to = NULL;
+  cs2->rel_to = eina_stringshare_add(lid_id);
+  
+  cs2->rotation = 0;
+	
+  cs2->priority = 0;
+  
+	cs2->rel_mode = E_RANDR2_RELATIVE_NONE;
+  
+	cs2->enabled = EINA_FALSE;
+  
+	
+	
+	
+	
   e_randr2_config_save();
   e_randr2_config_apply();
 }
@@ -162,7 +250,7 @@ _content_modes(Evas_Object* parent)
   Evas_Object *tb_c, *tb_m, *tb_t;
   Evas_Object* lbl;
   Evas_Object* ic;
-  Evas_Object *bt, *bt_b;
+  Evas_Object *bt, *bt_b, *bt_a;
   Evas_Object* rect;
   Evas_Object* box_c;
 
@@ -214,6 +302,15 @@ _content_modes(Evas_Object* parent)
   evas_object_smart_callback_add(bt_b, "clicked", _page_devices, parent);
   elm_table_pack(tb_t, bt_b, 0, 0, 1, 1);
   evas_object_show(bt_b);
+  
+  bt_a = elm_button_add(parent);
+  evas_object_color_set(bt_a, 255, 255, 255, 255);
+  evas_object_size_hint_weight_set(bt_a, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+  evas_object_size_hint_align_set(bt_a, 1, 0.5);
+  elm_object_text_set(bt_a, "Advanced");
+//   evas_object_smart_callback_add(bt_a, "clicked", advanced_settings_create, popup);
+  elm_table_pack(tb_t, bt_a, 0, 0, 1, 1);
+  evas_object_show(bt_a);
 
   box_c = elm_box_add(parent);
   evas_object_size_hint_align_set(box_c, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -299,7 +396,7 @@ _content_modes(Evas_Object* parent)
   evas_object_color_set(bt, 255, 255, 255, 0);
   evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-  evas_object_smart_callback_add(bt, "clicked", _set_extern_power, EINA_FALSE);
+  evas_object_smart_callback_add(bt, "clicked", _set_extern_power_on, NULL);
   evas_object_smart_callback_add(bt, "pressed", _focus_in_cb, NULL);
   evas_object_smart_callback_add(bt, "unpressed", _focus_out_cb, NULL);
   elm_table_pack(tb_c, bt, 0, 4, 1, 1);
@@ -308,7 +405,8 @@ _content_modes(Evas_Object* parent)
   lbl = elm_label_add(parent);
   evas_object_size_hint_weight_set(lbl, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(lbl, 0.5, 0);
-  elm_object_text_set(lbl, "HDMI-1 [Philips TV]<color=#ffffff> Off</color>");
+  snprintf(buf, sizeof(buf), "%s<color=#ffffff> Off</color>", device);
+  elm_object_text_set(lbl, buf);
   elm_table_pack(tb_c, lbl, 0, 5, 1, 1);
   evas_object_show(lbl);
 
@@ -327,7 +425,7 @@ _content_modes(Evas_Object* parent)
   evas_object_color_set(bt, 255, 255, 255, 0);
   evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-  evas_object_smart_callback_add(bt, "clicked", _set_extern_power, EINA_TRUE);
+  evas_object_smart_callback_add(bt, "clicked", _set_extern_power_off, NULL);
   evas_object_smart_callback_add(bt, "pressed", _focus_in_cb, NULL);
   evas_object_smart_callback_add(bt, "unpressed", _focus_out_cb, NULL);
   elm_table_pack(tb_c, bt, 1, 4, 1, 1);
@@ -336,7 +434,8 @@ _content_modes(Evas_Object* parent)
   lbl = elm_label_add(parent);
   evas_object_size_hint_weight_set(lbl, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(lbl, 0.5, 0);
-  elm_object_text_set(lbl, "LVDS-1 [Nvidia Defaul]<color=#ffffff> Off</color>");
+  snprintf(buf, sizeof(buf), "%s<color=#ffffff> Off</color>", pdevice);
+  elm_object_text_set(lbl, buf);
   elm_table_pack(tb_c, lbl, 1, 5, 1, 1);
   evas_object_show(lbl);
 
@@ -386,11 +485,12 @@ _content_device(Evas_Object* parent)
   Evas_Object *tb_c, *tb_m, *tb_t;
   Evas_Object* lbl;
   Evas_Object* ic;
-  Evas_Object* bt;
+  Evas_Object* bt, *bt_a;
   Evas_Object* rect;
   Evas_Object* box_c;
 
   char buf[PATH_MAX];
+  char *device_info;
 
   tb_m = elm_table_add(parent);
   evas_object_size_hint_align_set(tb_m, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -428,6 +528,15 @@ _content_device(Evas_Object* parent)
   elm_table_pack(tb_t, lbl, 0, 0, 1, 1);
   evas_object_show(lbl);
 
+  bt_a = elm_button_add(parent);
+  evas_object_color_set(bt_a, 255, 255, 255, 255);
+  evas_object_size_hint_weight_set(bt_a, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+  evas_object_size_hint_align_set(bt_a, 1, 0.5);
+  elm_object_text_set(bt_a, "Advanced");
+//   evas_object_smart_callback_add(bt_a, "clicked", advanced_settings_create, popup);
+  elm_table_pack(tb_t, bt_a, 0, 0, 1, 1);
+  evas_object_show(bt_a);
+
   box_c = elm_box_add(parent);
   evas_object_size_hint_align_set(box_c, EVAS_HINT_FILL, EVAS_HINT_FILL);
   evas_object_size_hint_weight_set(box_c, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -455,9 +564,12 @@ _content_device(Evas_Object* parent)
   EINA_LIST_FOREACH(e_randr2->screens, l, s)
   {
 
-    if (s->info.connected == EINA_TRUE && s->info.is_lid == EINA_FALSE)
+    if (s->info.connected == EINA_TRUE && s->info.is_lid == EINA_TRUE)
+	 {
       lid_id = s->id;
-
+      snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
+		pdevice = strdup(buf);
+	 }
     if (s->info.connected == EINA_TRUE && s->info.is_lid == EINA_FALSE) {
 
       ic = elm_icon_add(tb_c);
@@ -477,8 +589,9 @@ _content_device(Evas_Object* parent)
       evas_object_smart_callback_add(bt, "clicked", _page_modes, parent);
 
       snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
+		device_info = strdup(buf);
       evas_object_smart_callback_add(
-        bt, "clicked", _set_device_name, (char*)buf);
+        bt, "clicked", _set_device_name, device_info);
       evas_object_smart_callback_add(bt, "clicked", _set_id, s->id);
       evas_object_smart_callback_add(bt, "pressed", _focus_in_cb, NULL);
       evas_object_smart_callback_add(bt, "unpressed", _focus_out_cb, NULL);
@@ -500,18 +613,21 @@ _content_device(Evas_Object* parent)
     }
   }
   if (i != 1) {
-    ic = elm_icon_add(parent);
-    snprintf(buf, sizeof(buf), "%s/images/monitor.png", PACKAGE_DATA_DIR);
-    elm_image_file_set(ic, buf, NULL);
-    evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(321), ELM_SCALE_SIZE(124));
-    evas_object_size_hint_weight_set(ic, 0, EVAS_HINT_EXPAND);
-    evas_object_size_hint_align_set(ic, EVAS_HINT_FILL, EVAS_HINT_FILL);
-    elm_table_pack(tb_c, ic, 0, 0, 2, 1);
-    evas_object_show(ic);
+      ic = elm_icon_add(tb_c);
+      snprintf(buf, sizeof(buf), "%s/images/beamer.png", PACKAGE_DATA_DIR);
+      elm_image_file_set(ic, buf, NULL);
+      evas_object_size_hint_min_set(
+        ic, ELM_SCALE_SIZE(235), ELM_SCALE_SIZE(189));
+      evas_object_size_hint_weight_set(ic, 0, 0);
+      evas_object_size_hint_align_set(ic, EVAS_HINT_FILL, EVAS_HINT_FILL);
+      elm_table_pack(tb_c, ic, 0, 1, 1, 1);
+      evas_object_show(ic);
 
-    lbl = elm_label_add(parent);
+    lbl = elm_label_add(tb_c);
+      evas_object_size_hint_weight_set(lbl, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+      evas_object_size_hint_align_set(lbl, EVAS_HINT_FILL, EVAS_HINT_FILL);
     elm_object_text_set(lbl, "<color=#ffffff>NO EXTERNAL DEVICE FOUND</color>");
-    elm_table_pack(tb_c, lbl, 0, 1, 2, 1);
+    elm_table_pack(tb_c, lbl, 0, 2, 1, 1);
     evas_object_show(lbl);
   }
 
@@ -548,7 +664,7 @@ _content_expand(Evas_Object* parent)
   Evas_Object *tb_c, *tb_m, *tb_t;
   Evas_Object* lbl;
   Evas_Object* ic;
-  Evas_Object *bt, *bt_b;
+  Evas_Object *bt, *bt_b, *bt_a;
   Evas_Object* rect;
   Evas_Object* box_c;
 
@@ -601,6 +717,15 @@ _content_expand(Evas_Object* parent)
   evas_object_smart_callback_add(bt_b, "clicked", _page_modes, parent);
   elm_table_pack(tb_t, bt_b, 0, 0, 1, 1);
   evas_object_show(bt_b);
+  
+  bt_a = elm_button_add(parent);
+  evas_object_color_set(bt_a, 255, 255, 255, 255);
+  evas_object_size_hint_weight_set(bt_a, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+  evas_object_size_hint_align_set(bt_a, 1, 0.5);
+  elm_object_text_set(bt_a, "Advanced");
+//   evas_object_smart_callback_add(bt_a, "clicked", advanced_settings_create, popup);
+  elm_table_pack(tb_t, bt_a, 0, 0, 1, 1);
+  evas_object_show(bt_a);
 
   box_c = elm_box_add(parent);
   evas_object_size_hint_align_set(box_c, EVAS_HINT_FILL, EVAS_HINT_FILL);
