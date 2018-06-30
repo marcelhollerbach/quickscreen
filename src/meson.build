@@ -8,7 +8,8 @@ src = files([
 ])
 
 module = shared_module('module',
-                       src,
+                       src, 
+                       include_directories : inc_dir,
                        dependencies : [e, elm],
                        install_dir: install_dir,
                        install: true,

@@ -11,6 +11,7 @@ static void
 qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 {
   printf("QUICKSCREEN\n");
+  wizard_config_create(e_comp->elm);
 }
 
 E_API void*
