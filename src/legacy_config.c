@@ -20,6 +20,10 @@ _basic_create(E_Config_Dialog* cfd, Evas* evas, E_Config_Dialog_Data* cfdata)
 
   cfdata->wizard = wizard_config_create(cfd->dia->win);
   evas_object_smart_callback_add(cfdata->wizard, "changed", _changed_cb, cfd);
+  evas_smart_objects_calculate(evas_object_evas_get(cfd->dia->win));
+
+  e_util_win_auto_resize_fill(cfd->dia->win);
+  elm_win_center(cfd->dia->win, 1, 1);
 
   return cfdata->wizard;
 }

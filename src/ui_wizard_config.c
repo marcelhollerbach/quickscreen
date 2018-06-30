@@ -16,8 +16,6 @@ const char* pdevice;
 const char* lid_id;
 const char* id;
 
-Evas_Object* popup;
-
 Evas_Object*
 _content_device(Evas_Object* parent);
 Evas_Object*
@@ -858,27 +856,6 @@ _page_expand(void* data,
     nf, "Select Expand Mode", NULL, NULL, content, NULL);
   elm_naviframe_item_title_enabled_set(it, EINA_FALSE, EINA_FALSE);
 }
-/*
-_exit_nf(void* data, Evas_Object* obj EINA_UNUSED, void* event_info EINA_UNUSED)
-{
-  if (popup) {
-    evas_object_del(popup);
-    popup = NULL;
-  }
-}*/
-
-static void
-_block_clicked_cb(void* data, Evas_Object* obj, void* event_info EINA_UNUSED)
-{
-  if (data) {
-    evas_object_del(data);
-    data = NULL;
-  }
-  evas_object_del(popup);
-  popup = NULL;
-
-  e_comp_ungrab_input(1, 1);
-}
 
 Evas_Object*
 wizard_config_create(Evas_Object* win)
@@ -888,48 +865,20 @@ wizard_config_create(Evas_Object* win)
   Evas_Object *nf, *content;
   Elm_Object_Item* it;
 
-  if (popup) {
-    evas_object_del(popup);
-    popup = NULL;
-    evas_object_del(nf);
-    nf = NULL;
-    e_comp_ungrab_input(1, 1);
-  } else {
+  nf = elm_naviframe_add(win);
+  evas_object_size_hint_weight_set(nf, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-    popup = elm_popup_add(win);
-    elm_config_focus_highlight_enabled_set(EINA_TRUE);
-    e_comp_grab_input(1, 1);
+  content = _content_device(nf);
 
-    elm_object_style_set(popup, "transparent");
-    //     evas_object_layer_set(popup, E_LAYER_CLIENT_ABOVE);
-    evas_object_layer_set(popup, E_LAYER_POPUP);
+  it =
+    elm_naviframe_item_push(nf, "Select Device", NULL, NULL, content, NULL);
+  elm_naviframe_item_title_enabled_set(it, EINA_FALSE, EINA_FALSE);
+  evas_object_data_set(nf, "page1", it);
 
-    nf = elm_naviframe_add(popup);
-    evas_object_size_hint_weight_set(nf, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-    elm_win_resize_object_add(popup, nf);
+  // das muss sein :)
+  evas_object_data_set(nf, "__data", pd);
 
-    content = _content_device(nf);
-
-    it =
-      elm_naviframe_item_push(nf, "Select Device", NULL, NULL, content, NULL);
-    elm_naviframe_item_title_enabled_set(it, EINA_FALSE, EINA_FALSE);
-    evas_object_data_set(nf, "page1", it);
-
-    evas_object_smart_callback_add(
-      popup, "block,clicked", _block_clicked_cb, nf);
-
-    elm_object_content_set(popup, nf);
-    evas_object_show(popup);
-
-    //////////////////
-
-    // das muss sein :)
-    evas_object_data_set(popup, "__data", pd);
-
-    return popup;
-  }
-
-  //   return popup;
+  return nf;
 }
 
 void
