@@ -164,7 +164,6 @@ _set_extern_power_off(void* data EINA_UNUSED,
     e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs);
   }
 
-
   eina_stringshare_replace(&cs->rel_to, lid_id);
 
   cs->rotation = 0;
@@ -851,10 +850,36 @@ wizard_config_create(Evas_Object* win)
   nf = elm_naviframe_add(win);
   evas_object_size_hint_weight_set(nf, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-  content = _content_device(nf);
+  int count = 0;
+  E_Randr2_Screen* s;
+  Eina_List* l;
+  char* device_info;
+  char* lid_id;
+  char buf[PATH_MAX];
 
-  it =
-    elm_naviframe_item_push(nf, "Select Device", NULL, NULL, content, NULL);
+  EINA_LIST_FOREACH(e_randr2->screens, l, s)
+  {
+    if (s->info.connected == EINA_TRUE) {
+      if (s->info.is_lid == EINA_FALSE) {
+        snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
+        device = strdup(buf);
+
+        _set_id(s->id, NULL, NULL);
+        count++;
+      } else {
+        lid_id = s->id;
+        snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
+        pdevice = strdup(buf);
+      }
+    }
+  }
+
+  if (count == 1) {
+    content = _content_modes(nf);
+  } else
+    content = _content_device(nf);
+
+  it = elm_naviframe_item_push(nf, "Select Device", NULL, NULL, content, NULL);
   elm_naviframe_item_title_enabled_set(it, EINA_FALSE, EINA_FALSE);
   evas_object_data_set(nf, "page1", it);
 
