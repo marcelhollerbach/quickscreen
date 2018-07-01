@@ -7,10 +7,12 @@ int _quickscreen_log_domain = -1;
 
 E_API E_Module_Api e_modapi = { E_MODULE_API_VERSION, "Quickscreen" };
 
-static Evas_Object *popup;
+static Evas_Object* popup;
 
 static void
-_block_clicked_cb(void* data EINA_UNUSED, Evas_Object* obj, void* event_info EINA_UNUSED)
+_block_clicked_cb(void* data EINA_UNUSED,
+                  Evas_Object* obj,
+                  void* event_info EINA_UNUSED)
 {
   evas_object_del(popup);
   popup = NULL;
@@ -18,8 +20,26 @@ _block_clicked_cb(void* data EINA_UNUSED, Evas_Object* obj, void* event_info EIN
   e_comp_ungrab_input(1, 1);
 }
 
+void
+key_down(void* data EINA_UNUSED,
+         Evas* e EINA_UNUSED,
+         Evas_Object* obj EINA_UNUSED,
+         void* event_info)
+{
+  Evas_Event_Key_Down* ev = event_info;
+  const char* k = ev->keyname;
+
+  if (!strcmp(k, "Escape")) {
+    if (popup) {
+      evas_object_del(popup);
+      popup = NULL;
+      e_comp_ungrab_input(1, 1);
+    }
+  }
+}
+
 static void
-display_popup(Evas_Object *content)
+display_popup(Evas_Object* content)
 {
   if (popup) {
     evas_object_del(popup);
@@ -35,9 +55,11 @@ display_popup(Evas_Object *content)
   //     evas_object_layer_set(popup, E_LAYER_CLIENT_ABOVE);
   evas_object_layer_set(popup, E_LAYER_POPUP);
 
-
   evas_object_smart_callback_add(
     popup, "block,clicked", _block_clicked_cb, popup);
+
+  evas_object_event_callback_add(
+    popup, EVAS_CALLBACK_KEY_DOWN, key_down, popup);
 
   elm_object_content_set(popup, content);
   evas_object_show(popup);
@@ -51,7 +73,7 @@ display_popup(Evas_Object *content)
 static void
 qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 {
-  Evas_Object *content;
+  Evas_Object* content;
 
   content = wizard_config_create(e_comp->elm);
   display_popup(content);
