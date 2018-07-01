@@ -739,7 +739,7 @@ _content_expand(Evas_Object* parent)
   ///////////
 
   ic = elm_image_add(parent);
-  snprintf(buf, sizeof(buf), "%s/images/left_off.png", PACKAGE_DATA_DIR);
+  snprintf(buf, sizeof(buf), "%s/images/left_of.png", PACKAGE_DATA_DIR);
   elm_image_file_set(ic, buf, NULL);
   evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(165), ELM_SCALE_SIZE(62));
   evas_object_size_hint_weight_set(ic, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
@@ -779,7 +779,7 @@ _content_expand(Evas_Object* parent)
   ///////////
 
   ic = elm_image_add(parent);
-  snprintf(buf, sizeof(buf), "%s/images/right_off.png", PACKAGE_DATA_DIR);
+  snprintf(buf, sizeof(buf), "%s/images/right_of.png", PACKAGE_DATA_DIR);
   elm_image_file_set(ic, buf, NULL);
   evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(165), ELM_SCALE_SIZE(62));
   evas_object_size_hint_weight_set(ic, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
