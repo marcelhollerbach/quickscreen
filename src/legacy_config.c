@@ -52,6 +52,11 @@ _advanced_create(E_Config_Dialog* cfd,
   cfdata->advanced = advanced_settings_create(cfd->dia->win);
   evas_object_smart_callback_add(cfdata->advanced, "changed", _changed_cb, cfd);
 
+  evas_smart_objects_calculate(evas_object_evas_get(cfd->dia->win));
+
+  e_util_win_auto_resize_fill(cfd->dia->win);
+  elm_win_center(cfd->dia->win, 1, 1);
+
   return cfdata->advanced;
 }
 

@@ -1125,10 +1125,6 @@ advanced_settings_create(Evas_Object* win)
   elm_box_pack_end(bx2, o);
   evas_object_show(o);
 
-  evas_smart_objects_calculate(evas_object_evas_get(win));
-
-  e_util_win_auto_resize_fill(win);
-  elm_win_center(win, 1, 1);
   return bx;
 }
 
