@@ -783,7 +783,7 @@ _cb_policy_clone(void* data,
 }
 
 static void
-_del_event(void* data, Evas_Object* obj, Evas* e, void* event_info)
+_del_event(void* data, Evas* e, Evas_Object* obj, void* event_info)
 {
   void* dt;
   E_Config_Randr2_Screen* cs;
