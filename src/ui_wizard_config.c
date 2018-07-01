@@ -769,13 +769,6 @@ _content_expand(Evas_Object* parent)
   elm_table_pack(tb_c, ic, 1, 1, 1, 1);
   evas_object_show(ic);
 
-  bt = elm_button_add(parent);
-  evas_object_color_set(bt, 255, 255, 255, 0);
-  evas_object_size_hint_weight_set(bt, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-  evas_object_size_hint_align_set(bt, EVAS_HINT_FILL, EVAS_HINT_FILL);
-  elm_table_pack(tb_c, bt, 1, 1, 1, 1);
-  evas_object_show(bt);
-
   ///////////
 
   ic = elm_image_add(parent);
