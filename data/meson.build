@@ -27,9 +27,12 @@ dir_data = join_paths(dir_prefix, get_option('datadir'))
 install_data('images/monitor.png',
 				 'images/beamer.png',
 				 'images/clone.png',
-				 'images/extend.png',
+				 'images/expand.png',
 				 'images/left.png',
 				 'images/right.png',
-				 'images/beamer.png',
+				 'images/above.png',
+				 'images/below.png',
+				 'images/left_off.png',
+				 'images/right_off.png',
               install_dir: join_paths(dir_data, proj, 'images')
              )
