@@ -37,6 +37,7 @@ _page_expand(void* data,
              void* event_info EINA_UNUSED);
 
 void
+
 _focus_in_cb(void* data,
              Evas_Object* obj EINA_UNUSED,
              void* event_info EINA_UNUSED);
@@ -78,11 +79,7 @@ _set_relative(void* data,
     cs->id = eina_stringshare_add(id);
     e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs);
   }
-  if (cs->rel_to)
-    eina_stringshare_del(cs->rel_to);
-  cs->rel_to = NULL;
-  //         printf("APPLY %s .... rel to %s\n", cs->id, cs2->rel_to);
-  cs->rel_to = eina_stringshare_add(lid_id);
+  eina_stringshare_replace(&cs->rel_to, lid_id);
   //         cs->rel_align = cs2->rel_align;
   //         cs->mode_w = cs2->mode_w;
   //         cs->mode_h = cs2->mode_h;
@@ -119,11 +116,7 @@ _set_extern_power_on(void* data EINA_UNUSED,
     e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs);
   }
 
-  if (cs->rel_to)
-    eina_stringshare_del(cs->rel_to);
-
-  cs->rel_to = NULL;
-  cs->rel_to = eina_stringshare_add(lid_id);
+  eina_stringshare_replace(&cs->rel_to, lid_id);
 
   cs->rotation = 0;
 
@@ -141,10 +134,7 @@ _set_extern_power_on(void* data EINA_UNUSED,
     e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs2);
   }
 
-  eina_stringshare_del(cs2->rel_to);
-
-  cs2->rel_to = NULL;
-  cs2->rel_to = eina_stringshare_add(lid_id);
+  eina_stringshare_replace(&cs2->rel_to, lid_id);
 
   cs2->rotation = 0;
 
@@ -174,11 +164,8 @@ _set_extern_power_off(void* data EINA_UNUSED,
     e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs);
   }
 
-  if (cs->rel_to)
-    eina_stringshare_del(cs->rel_to);
 
-  cs->rel_to = NULL;
-  cs->rel_to = eina_stringshare_add(lid_id);
+  eina_stringshare_replace(&cs->rel_to, lid_id);
 
   cs->rotation = 0;
 
@@ -196,11 +183,7 @@ _set_extern_power_off(void* data EINA_UNUSED,
     e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs2);
   }
 
-  if (cs2->rel_to)
-    eina_stringshare_del(cs2->rel_to);
-
-  cs2->rel_to = NULL;
-  cs2->rel_to = eina_stringshare_add(lid_id);
+  eina_stringshare_replace(&cs2->rel_to, lid_id);
 
   cs2->rotation = 0;
 
