@@ -11,13 +11,16 @@ typedef struct
 #define SCOPE_DATA(popup)                                                      \
   Local_Data* pd = evas_object_data_get(popup, "__data");
 
+
 const char* device;
 const char* pdevice;
 const char* lid_id;
 const char* id;
+int count = 0;
+
 
 Evas_Object*
-_content_device(Evas_Object* parent);
+_content_source_devices(Evas_Object* parent);
 Evas_Object*
 _content_modes(Evas_Object* parent);
 Evas_Object*
@@ -37,7 +40,6 @@ _page_expand(void* data,
              void* event_info EINA_UNUSED);
 
 void
-
 _focus_in_cb(void* data,
              Evas_Object* obj EINA_UNUSED,
              void* event_info EINA_UNUSED);
@@ -64,12 +66,13 @@ _screen_config_randr_id_find(const char* id)
   return NULL;
 }
 
+
 void
 _set_relative(void* data,
               Evas_Object* obj EINA_UNUSED,
               void* event_info EINA_UNUSED)
 {
-  E_Config_Randr2_Screen *cs, *cs2;
+  E_Config_Randr2_Screen *cs;
 
   printf("DNAME SET DATA: %s\n\n", id);
   // 	        if (!cs2->id) continue;
@@ -431,8 +434,9 @@ _page_modes(void* data,
             Evas_Object* obj EINA_UNUSED,
             void* event_info EINA_UNUSED)
 {
-
-  Evas_Object *content, *nf = data;
+  Evas_Object *nf;
+  Evas_Object *content;
+  nf = data;
   Elm_Object_Item* it;
 
   content = _content_modes(nf);
@@ -442,7 +446,7 @@ _page_modes(void* data,
 }
 
 Evas_Object*
-_content_device(Evas_Object* parent)
+_content_source_devices(Evas_Object* parent)
 {
   Eina_List* l;
   E_Randr2_Screen* s;
@@ -532,12 +536,12 @@ _content_device(Evas_Object* parent)
   EINA_LIST_FOREACH(e_randr2->screens, l, s)
   {
 
-    if (s->info.connected == EINA_TRUE && s->info.is_lid == EINA_TRUE) {
-      lid_id = s->id;
-      snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
-      pdevice = strdup(buf);
-    }
-    if (s->info.connected == EINA_TRUE && s->info.is_lid == EINA_FALSE) {
+//     if (s->info.connected == EINA_TRUE && s->info.is_lid == EINA_TRUE) {
+//       lid_id = s->id;
+//       snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
+//       pdevice = strdup(buf);
+//     }
+    if (s->info.connected == EINA_TRUE /*&& s->info.is_lid == EINA_FALSE*/) {
 
       ic = elm_icon_add(tb_c);
       snprintf(buf, sizeof(buf), "%s/images/beamer.png", PACKAGE_DATA_DIR);
@@ -562,8 +566,8 @@ _content_device(Evas_Object* parent)
       evas_object_smart_callback_add(bt, "clicked", _set_id, s->id);
       evas_object_smart_callback_add(bt, "pressed", _focus_in_cb, NULL);
       evas_object_smart_callback_add(bt, "unpressed", _focus_out_cb, NULL);
-      elm_object_signal_callback_add(bt, "focused", "*", _focus_in_cb, NULL);
-      elm_object_signal_callback_add(bt, "unfocused", "*", _focus_out_cb, NULL);
+//       elm_object_signal_callback_add(bt, "focused", "*", _focus_in_cb, NULL);
+//       elm_object_signal_callback_add(bt, "unfocused", "*", _focus_out_cb, NULL);
       elm_table_pack(tb_c, bt, x, 1, 1, 2);
       evas_object_show(bt);
 
@@ -620,10 +624,12 @@ _page_devices(void* data,
               void* event_info EINA_UNUSED)
 {
 
-  Evas_Object *content, *nf = data;
+  Evas_Object *content;
+  Evas_Object *nf;
+  nf = data;
   Elm_Object_Item* it;
 
-  content = _content_device(nf);
+  content = _content_source_devices(nf);
 
   it = elm_naviframe_item_push(nf, "Select Mode", NULL, NULL, content, NULL);
   elm_naviframe_item_title_enabled_set(it, EINA_FALSE, EINA_FALSE);
@@ -829,7 +835,9 @@ _page_expand(void* data,
              Evas_Object* obj EINA_UNUSED,
              void* event_info EINA_UNUSED)
 {
-  Evas_Object *content, *nf = data;
+  Evas_Object *content;
+  Evas_Object *nf;
+  nf = data;
   Elm_Object_Item* it;
 
   content = _content_expand(nf);
@@ -850,12 +858,11 @@ wizard_config_create(Evas_Object* win)
   nf = elm_naviframe_add(win);
   evas_object_size_hint_weight_set(nf, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
 
-  int count = 0;
   E_Randr2_Screen* s;
   Eina_List* l;
-  char* device_info;
-  char* lid_id;
   char buf[PATH_MAX];
+  count = 0;
+
 
   EINA_LIST_FOREACH(e_randr2->screens, l, s)
   {
@@ -874,10 +881,10 @@ wizard_config_create(Evas_Object* win)
     }
   }
 
-  if (count == 1) {
-    content = _content_modes(nf);
-  } else
-    content = _content_device(nf);
+//   if (count == 1) {
+//     content = _content_modes(nf);
+//   } else
+    content = _content_source_devices(nf);
 
   it = elm_naviframe_item_push(nf, "Select Device", NULL, NULL, content, NULL);
   elm_naviframe_item_title_enabled_set(it, EINA_FALSE, EINA_FALSE);
