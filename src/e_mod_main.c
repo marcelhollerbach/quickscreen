@@ -88,14 +88,14 @@ e_modapi_init(E_Module* m)
 
   act = e_action_add("qs_key");
   e_action_predef_name_set(
-    "Quickscreen", "Toogle Screenlayout Popup", "qs_key", NULL, NULL, 0);
+    "Quickscreen", "Show Quickscreen Popup", "qs_key", NULL, NULL, 0);
   act->func.go = qs_key;
 
-  e_configure_registry_item_add("extensions/screen2",
+  e_configure_registry_item_add("extensions/quickscreen",
                                 0,
-                                "Screen Settings2",
+                                "Quickscreen",
                                 NULL,
-                                NULL,
+                                "preferences-system-screen-resolution",
                                 quickscreen_settings);
 
   return m;
@@ -109,7 +109,7 @@ e_modapi_shutdown(E_Module* m EINA_UNUSED)
   E_FREE_FUNC(act, e_action_del);
   e_action_predef_name_del("Quickscreen", "qs_key");
 
-  e_configure_registry_item_del("extensions/screen2");
+  e_configure_registry_item_del("extensions/quickscreen");
 
   return 1;
 }

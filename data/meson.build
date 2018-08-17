@@ -32,7 +32,7 @@ install_data('images/monitor.png',
 				 'images/right.png',
 				 'images/above.png',
 				 'images/below.png',
-				 'images/left_off.png',
-				 'images/right_off.png',
+				 'images/left_of.png',
+				 'images/right_of.png',
               install_dir: join_paths(dir_data, proj, 'images')
              )
