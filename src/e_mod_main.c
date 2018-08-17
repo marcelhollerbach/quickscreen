@@ -47,8 +47,9 @@ display_popup(Evas_Object* content)
     e_comp_ungrab_input(1, 1);
   }
 
-  popup = elm_popup_add(e_comp->elm);
   elm_config_focus_highlight_enabled_set(EINA_TRUE);
+  
+  popup = elm_popup_add(e_comp->elm);
   e_comp_grab_input(1, 1);
 
   elm_object_style_set(popup, "transparent");
