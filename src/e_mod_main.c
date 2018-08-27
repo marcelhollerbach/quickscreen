@@ -26,6 +26,9 @@ key_down(void* data EINA_UNUSED,
          Evas_Object* obj EINA_UNUSED,
          void* event_info)
 {
+  Evas_Event_Key_Down* ev = event_info;
+  const char* k = ev->keyname;
+	
   if (!strcmp(k, "Escape")) {
     if (popup) {
       evas_object_del(popup);
