@@ -12,8 +12,8 @@ typedef struct
   Local_Data* pd = evas_object_data_get(popup, "__data");
 
 
-const char* source_device;
-const char* target_device;
+char* source_device;
+char* target_device;
 const char* lid_id;
 const char* id;
 const char* source_id;
@@ -55,6 +55,12 @@ void
 _focus_out_cb(void* data,
               Evas_Object* obj EINA_UNUSED,
               void* event_info EINA_UNUSED);
+
+static void
+_cb_settings_screen_setup(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, const char *emission EINA_UNUSED, const char *source EINA_UNUSED)
+{
+   e_configure_registry_call("screen/screen_setup", NULL, NULL);
+}
 
 static E_Config_Randr2_Screen*
 _screen_config_randr_id_find(const char* id)
@@ -305,8 +311,8 @@ _content_modes(Evas_Object* parent)
   evas_object_size_hint_weight_set(bt_a, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_a, 1, 0.5);
   elm_object_text_set(bt_a, "Advanced");
-  //   evas_object_smart_callback_add(bt_a, "clicked", advanced_settings_create,
-  //   popup);
+    evas_object_smart_callback_add(bt_a, "clicked", _cb_settings_screen_setup,
+    NULL);
   elm_table_pack(tb_t, bt_a, 0, 0, 1, 1);
   evas_object_show(bt_a);
 
@@ -547,8 +553,8 @@ _content_target_devices(Evas_Object* parent)
   evas_object_size_hint_weight_set(bt_a, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_a, 1, 0.5);
   elm_object_text_set(bt_a, "Advanced");
-  //   evas_object_smart_callback_add(bt_a, "clicked", advanced_settings_create,
-  //   popup);
+    evas_object_smart_callback_add(bt_a, "clicked", _cb_settings_screen_setup,
+    NULL);
   elm_table_pack(tb_t, bt_a, 0, 0, 1, 1);
   evas_object_show(bt_a);
 
@@ -609,8 +615,8 @@ _content_target_devices(Evas_Object* parent)
       evas_object_smart_callback_add(bt, "clicked", _set_target_id, s->id);
       evas_object_smart_callback_add(bt, "pressed", _focus_in_cb, ic);
       evas_object_smart_callback_add(bt, "unpressed", _focus_out_cb, ic);
-//       elm_object_signal_callback_add(bt, "focused", "*", _focus_in_cb, NULL);
-//       elm_object_signal_callback_add(bt, "unfocused", "*", _focus_out_cb, NULL);
+      elm_object_signal_callback_add(bt, "focused", "*", _focus_in_cb, NULL);
+      elm_object_signal_callback_add(bt, "unfocused", "*", _focus_out_cb, NULL);
       elm_table_pack(tb_c, bt, x, 1, 1, 2);
       evas_object_show(bt);
 
@@ -730,8 +736,8 @@ _content_source_devices(Evas_Object* parent)
   evas_object_size_hint_weight_set(bt_a, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_a, 1, 0.5);
   elm_object_text_set(bt_a, "Advanced");
-  //   evas_object_smart_callback_add(bt_a, "clicked", advanced_settings_create,
-  //   popup);
+    evas_object_smart_callback_add(bt_a, "clicked", _cb_settings_screen_setup,
+    NULL);
   elm_table_pack(tb_t, bt_a, 0, 0, 1, 1);
   evas_object_show(bt_a);
 
@@ -928,8 +934,8 @@ _content_expand(Evas_Object* parent)
   evas_object_size_hint_weight_set(bt_a, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_a, 1, 0.5);
   elm_object_text_set(bt_a, "Advanced");
-  //   evas_object_smart_callback_add(bt_a, "clicked", advanced_settings_create,
-  //   popup);
+    evas_object_smart_callback_add(bt_a, "clicked", _cb_settings_screen_setup,
+    NULL);
   elm_table_pack(tb_t, bt_a, 0, 0, 1, 1);
   evas_object_show(bt_a);
 
