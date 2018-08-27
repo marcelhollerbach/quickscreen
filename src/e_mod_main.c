@@ -28,6 +28,14 @@ key_down(void* data EINA_UNUSED,
 {
   Evas_Event_Key_Down* ev = event_info;
   const char* k = ev->keyname;
+//TODO select keybinding for quickscreen and close quickscreen of its open
+// E_Action *a;
+// a = e_action_find("qs_key");
+// if (a == act) {
+//       evas_object_del(popup);
+//       popup = NULL;
+//       e_comp_ungrab_input(1, 1);
+// }
 
   if (!strcmp(k, "Escape")) {
     if (popup) {
@@ -37,6 +45,7 @@ key_down(void* data EINA_UNUSED,
     }
   }
 }
+
 
 static void
 display_popup(Evas_Object* content)
@@ -53,7 +62,7 @@ display_popup(Evas_Object* content)
   e_comp_grab_input(1, 1);
 
   elm_object_style_set(popup, "transparent");
-  //     evas_object_layer_set(popup, E_LAYER_CLIENT_ABOVE);
+//       evas_object_layer_set(popup, E_LAYER_CLIENT_ABOVE);
   evas_object_layer_set(popup, E_LAYER_POPUP);
 
   evas_object_smart_callback_add(
@@ -65,7 +74,7 @@ display_popup(Evas_Object* content)
   elm_object_content_set(popup, content);
   evas_object_show(popup);
 
-  //////////////////
+
 
   // das muss sein :)
   evas_object_data_set(popup, "__data", NULL);
@@ -74,6 +83,7 @@ display_popup(Evas_Object* content)
 static void
 qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 {
+
   Evas_Object* content;
 
   content = wizard_config_create(e_comp->elm);
