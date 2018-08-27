@@ -26,17 +26,6 @@ key_down(void* data EINA_UNUSED,
          Evas_Object* obj EINA_UNUSED,
          void* event_info)
 {
-  Evas_Event_Key_Down* ev = event_info;
-  const char* k = ev->keyname;
-//TODO select keybinding for quickscreen and close quickscreen of its open
-// E_Action *a;
-// a = e_action_find("qs_key");
-// if (a == act) {
-//       evas_object_del(popup);
-//       popup = NULL;
-//       e_comp_ungrab_input(1, 1);
-// }
-
   if (!strcmp(k, "Escape")) {
     if (popup) {
       evas_object_del(popup);
