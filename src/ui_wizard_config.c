@@ -565,13 +565,13 @@ _content_target_devices(Evas_Object* parent)
   evas_object_show(box_c);
 
   /// SCROLLER
-  Evas_Object* scroller = elm_scroller_add(box_c);
-  evas_object_size_hint_weight_set(
-    scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-  evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+//   Evas_Object* scroller = elm_scroller_add(box_c);
+//   evas_object_size_hint_weight_set(
+//     scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+//   evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-  elm_box_pack_end(box_c, scroller);
-  evas_object_show(scroller);
+//   elm_box_pack_end(box_c, scroller);
+//   evas_object_show(scroller);
 
   tb_c = elm_table_add(box_c);
   elm_table_padding_set(tb_c, 10, 10);
@@ -655,12 +655,12 @@ _content_target_devices(Evas_Object* parent)
     evas_object_show(lbl);
   }
 
-  elm_object_content_set(scroller, tb_c);
-  elm_scroller_bounce_set(scroller, EINA_TRUE, EINA_FALSE);
-  elm_scroller_policy_set(
-    scroller, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_AUTO);
-  elm_scroller_propagate_events_set(scroller, EINA_TRUE);
-  elm_scroller_page_relative_set(scroller, 0, 1);
+  elm_box_pack_end(box_c,  tb_c);
+//   elm_object_content_set(scroller, tb_c);
+//   elm_scroller_bounce_set(scroller, EINA_TRUE, EINA_FALSE);
+//   elm_scroller_policy_set(scroller, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_AUTO);
+//   elm_scroller_propagate_events_set(scroller, EINA_TRUE);
+//   elm_scroller_page_relative_set(scroller, 0, 1);
 
   ////////////// END INHALT TABLE CONTENT ////
 
@@ -748,13 +748,13 @@ _content_source_devices(Evas_Object* parent)
   evas_object_show(box_c);
 
   /// SCROLLER
-  Evas_Object* scroller = elm_scroller_add(box_c);
-  evas_object_size_hint_weight_set(
-    scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-  evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
+//   Evas_Object* scroller = elm_scroller_add(box_c);
+//   evas_object_size_hint_weight_set(
+//     scroller, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+//   evas_object_size_hint_align_set(scroller, EVAS_HINT_FILL, EVAS_HINT_FILL);
 
-  elm_box_pack_end(box_c, scroller);
-  evas_object_show(scroller);
+//   elm_box_pack_end(box_c, scroller);
+//   evas_object_show(scroller);
 
   tb_c = elm_table_add(box_c);
   elm_table_padding_set(tb_c, 10, 10);
@@ -764,7 +764,9 @@ _content_source_devices(Evas_Object* parent)
   evas_object_show(tb_c);
 
   ////////////// START INHALT TABLE CONTENT ////
-
+int z = 0;
+  for(z=0; z<2; z++)
+  {
   EINA_LIST_FOREACH(e_randr2->screens, l, s)
   {
 
@@ -773,7 +775,7 @@ _content_source_devices(Evas_Object* parent)
 //       snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
 //       pdevice = strdup(buf);
 //     }
-    if (s->info.connected == EINA_TRUE  && s->id != target_id/*&& s->info.is_lid == EINA_FALSE*/) {
+//     if (s->info.connected == EINA_TRUE  && s->id != target_id/*&& s->info.is_lid == EINA_FALSE*/) {
 
       ic = elm_icon_add(tb_c);
       snprintf(buf, sizeof(buf), "%s/images/beamer.png", PACKAGE_DATA_DIR);
@@ -815,18 +817,20 @@ _content_source_devices(Evas_Object* parent)
 
       i = 1;
       x++;
-    }
+//     }
+  }
   }
   if (x == 1) {
 // 	  elm_obj_naviframe_item_pop();
   }
-
-  elm_object_content_set(scroller, tb_c);
-  elm_scroller_bounce_set(scroller, EINA_TRUE, EINA_FALSE);
-  elm_scroller_policy_set(
-    scroller, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_AUTO);
-  elm_scroller_propagate_events_set(scroller, EINA_TRUE);
-  elm_scroller_page_relative_set(scroller, 0, 1);
+// 
+  elm_box_pack_end(box_c, tb_c);
+//   elm_object_content_set(scroller, tb_c);
+//   elm_scroller_bounce_set(scroller, EINA_TRUE, EINA_FALSE);
+//   elm_scroller_policy_set(
+//     scroller, ELM_SCROLLER_POLICY_AUTO, ELM_SCROLLER_POLICY_AUTO);
+//   elm_scroller_propagate_events_set(scroller, EINA_TRUE);
+//   elm_scroller_page_relative_set(scroller, 0, 1);
 
   ////////////// END INHALT TABLE CONTENT ////
 

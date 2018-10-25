@@ -16,12 +16,17 @@ _block_clicked_cb(void* data EINA_UNUSED,
                   Evas_Object* obj,
                   void* event_info EINA_UNUSED)
 {
-  Evas_Object *pup;
+  Evas_Object *pup, *mirror;
 
   evas_object_del(popup);
   popup = NULL;
 
   e_comp_ungrab_input(1, 1);
+     EINA_LIST_FREE(mirrors, mirror)
+   {
+      evas_object_del(mirror);
+      mirror = NULL;
+   }
   EINA_LIST_FREE(popups, pup)
   {
      evas_object_del(pup);
@@ -37,10 +42,11 @@ key_down(void* data EINA_UNUSED,
 {
   Evas_Event_Key_Down* ev = event_info;
   const char* k = ev->keyname;
-  Evas_Object *pup;
+//   Evas_Object *pup;
 	
   if (!strcmp(k, "Escape")) {
     if (popup) {
+/*		 
       evas_object_del(popup);
       popup = NULL;
       e_comp_ungrab_input(1, 1);
@@ -49,7 +55,25 @@ key_down(void* data EINA_UNUSED,
          evas_object_del(pup);
          pup = NULL;
       }
+      */
+  Evas_Object *pup, *mirror;
+
+  evas_object_del(popup);
+  popup = NULL;
+
+  e_comp_ungrab_input(1, 1);
+     EINA_LIST_FREE(mirrors, mirror)
+   {
+      evas_object_del(mirror);
+      mirror = NULL;
+   }
+  EINA_LIST_FREE(popups, pup)
+  {
+     evas_object_del(pup);
+     pup = NULL;
+  }
     }
+    
   }
 }
 
@@ -81,7 +105,7 @@ popup_resized(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_dat
       if (i == 0) 
 	{
            /*center popup on first zone*/
-           e_comp_object_util_center_on_zone(popup, zone); 
+           e_comp_object_util_center_on_zone(popup, zone);
            evas_object_show(popup);
         }
       else 
@@ -92,8 +116,15 @@ popup_resized(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_dat
            evas_object_image_source_events_set(mirror, EINA_TRUE);
 
            pup = elm_popup_add(e_comp->elm);
+			  
+			  Evas_Object *scroller = elm_scroller_add(pup);
+			  evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
+			  elm_object_content_set(popup, scroller);
+	
            evas_object_geometry_get(obj, 0, 0, &w, &h);
            evas_object_size_hint_min_set(mirror, w, h);
+			  
+			  printf("SIZE POPUP: %i %i\n\n", w, h);
            elm_object_style_set(pup, "transparent");
            evas_object_layer_set(pup, E_LAYER_CLIENT_ABOVE);
            evas_object_layer_set(pup, E_LAYER_POPUP);
@@ -101,7 +132,8 @@ popup_resized(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_dat
            evas_object_smart_callback_add(
            pup, "block,clicked", _block_clicked_cb, popup);
 				
-           elm_object_content_set(pup, mirror); 
+//            elm_object_content_set(pup, mirror); 
+           elm_object_content_set(scroller, mirror); 
 
            e_comp_object_util_center_on_zone(pup, zone);
            evas_object_show(mirror);
@@ -109,12 +141,11 @@ popup_resized(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_dat
 
            /*append mirror to list of mirrors*/
            mirrors = eina_list_append(mirrors, mirror);
-           /*append popoup to list of mirrored popups*/
+           /*append popup to list of mirrored popups*/
            popups = eina_list_append(popups, pup);
 
 
            if (!mirror) printf("Mirror is null\n");
-// 					printf("QUICKSCREEN MIRROR\n");
         } 
       i++;
    }
@@ -129,6 +160,12 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
    content = wizard_config_create(e_comp->elm);
 //   display_popup(content);
    popup = elm_popup_add(e_comp->elm);
+	Evas_Object *scroller = elm_scroller_add(popup);
+	evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
+	elm_object_content_set(popup, scroller);
+// 	elm_object_content_set(scroller, content);
+	
+	
 //    e_comp_grab_input(1, 1);
 
    elm_object_style_set(popup, "transparent");
@@ -144,7 +181,8 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
    /*add resize callback for popup*/
    evas_object_event_callback_add(content, EVAS_CALLBACK_RESIZE, popup_resized, popup);
 					
-   elm_object_content_set(popup, content); 
+//    elm_object_content_set(popup, content);
+	elm_object_content_set(scroller, content);
 					
    int i = 0;
 	
@@ -162,14 +200,20 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
              evas_object_image_source_events_set(mirror, EINA_TRUE);
 
              Evas_Object *pup = elm_popup_add(e_comp->elm);
-	     elm_object_style_set(pup, "transparent");
-	     evas_object_layer_set(pup, E_LAYER_CLIENT_ABOVE);
-	     evas_object_layer_set(pup, E_LAYER_POPUP);
+				 
+				 Evas_Object *scroller = elm_scroller_add(pup);
+				 evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
+				 elm_object_content_set(popup, scroller);
+				 
+				 elm_object_style_set(pup, "transparent");
+			    evas_object_layer_set(pup, E_LAYER_CLIENT_ABOVE);
+			    evas_object_layer_set(pup, E_LAYER_POPUP);
 
-	     evas_object_smart_callback_add(
-	        pup, "block,clicked", _block_clicked_cb, popup);
+			   	evas_object_smart_callback_add(
+						pup, "block,clicked", _block_clicked_cb, popup);
 					
-             elm_object_content_set(pup, mirror); 
+//              elm_object_content_set(pup, mirror); 
+             elm_object_content_set(scroller, mirror); 
 
              e_comp_object_util_center_on_zone(pup, zone);
              evas_object_show(mirror);
