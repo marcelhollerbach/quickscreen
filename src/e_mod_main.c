@@ -6,21 +6,26 @@ static E_Action* act;
 int _quickscreen_log_domain = -1;
 
 /*List of Mirrored Popups*/
-Eina_List *popups, *mirrors;
+Eina_List *popups, *mirrors, *popups1;
 E_API E_Module_Api e_modapi = { E_MODULE_API_VERSION, "Quickscreen" };
 
 static Evas_Object* popup;
+
+Evas_Object *popup1;
 
 static void
 _block_clicked_cb(void* data EINA_UNUSED,
                   Evas_Object* obj,
                   void* event_info EINA_UNUSED)
 {
-  Evas_Object *pup, *mirror;
+  Evas_Object *pup, *mirror, *popup1;
 
   evas_object_del(popup);
   popup = NULL;
-
+//   
+//   evas_object_del(popup1);
+//   popup1 = NULL;
+ 
   e_comp_ungrab_input(1, 1);
      EINA_LIST_FREE(mirrors, mirror)
    {
@@ -32,6 +37,22 @@ _block_clicked_cb(void* data EINA_UNUSED,
      evas_object_del(pup);
      pup = NULL;
   }
+  EINA_LIST_FREE(popups1, popup1)
+  {
+     evas_object_del(popup1);
+     popup1 = NULL;
+  }
+}
+
+static void
+_block_clicked_cb1(void* data EINA_UNUSED,
+                  Evas_Object* obj,
+                  void* event_info EINA_UNUSED)
+{
+
+  evas_object_del(obj);
+//   popup = NULL;
+
 }
 
 void
@@ -94,7 +115,7 @@ popup_resized(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_dat
       evas_object_del(pup);
       pup = NULL;
    }
-   printf("POPUP RESIZE\n");
+//    printf("POPUP RESIZE\n");
 		
    int i = 0;
    int h = 0;
@@ -117,14 +138,14 @@ popup_resized(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_dat
 
            pup = elm_popup_add(e_comp->elm);
 			  
-			  Evas_Object *scroller = elm_scroller_add(pup);
-			  evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
-			  elm_object_content_set(popup, scroller);
+// 			  Evas_Object *scroller = elm_scroller_add(pup);
+// 			  evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
+// 			  elm_object_content_set(popup, scroller);
 	
            evas_object_geometry_get(obj, 0, 0, &w, &h);
            evas_object_size_hint_min_set(mirror, w, h);
 			  
-			  printf("SIZE POPUP: %i %i\n\n", w, h);
+// 			  printf("SIZE POPUP: %i %i\n\n", w, h);
            elm_object_style_set(pup, "transparent");
            evas_object_layer_set(pup, E_LAYER_CLIENT_ABOVE);
            evas_object_layer_set(pup, E_LAYER_POPUP);
@@ -132,8 +153,8 @@ popup_resized(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_dat
            evas_object_smart_callback_add(
            pup, "block,clicked", _block_clicked_cb, popup);
 				
-//            elm_object_content_set(pup, mirror); 
-           elm_object_content_set(scroller, mirror); 
+           elm_object_content_set(pup, mirror); 
+//            elm_object_content_set(scroller, mirror); 
 
            e_comp_object_util_center_on_zone(pup, zone);
            evas_object_show(mirror);
@@ -160,9 +181,9 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
    content = wizard_config_create(e_comp->elm);
 //   display_popup(content);
    popup = elm_popup_add(e_comp->elm);
-	Evas_Object *scroller = elm_scroller_add(popup);
-	evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
-	elm_object_content_set(popup, scroller);
+// 	Evas_Object *scroller = elm_scroller_add(popup);
+// 	evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
+// 	elm_object_content_set(popup, scroller);
 // 	elm_object_content_set(scroller, content);
 	
 	
@@ -181,8 +202,8 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
    /*add resize callback for popup*/
    evas_object_event_callback_add(content, EVAS_CALLBACK_RESIZE, popup_resized, popup);
 					
-//    elm_object_content_set(popup, content);
-	elm_object_content_set(scroller, content);
+   elm_object_content_set(popup, content);
+// 	elm_object_content_set(scroller, content);
 					
    int i = 0;
 	
@@ -201,9 +222,9 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 
              Evas_Object *pup = elm_popup_add(e_comp->elm);
 				 
-				 Evas_Object *scroller = elm_scroller_add(pup);
-				 evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
-				 elm_object_content_set(popup, scroller);
+// 				 Evas_Object *scroller = elm_scroller_add(pup);
+// 				 evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
+// 				 elm_object_content_set(popup, scroller);
 				 
 				 elm_object_style_set(pup, "transparent");
 			    evas_object_layer_set(pup, E_LAYER_CLIENT_ABOVE);
@@ -212,8 +233,8 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 			   	evas_object_smart_callback_add(
 						pup, "block,clicked", _block_clicked_cb, popup);
 					
-//              elm_object_content_set(pup, mirror); 
-             elm_object_content_set(scroller, mirror); 
+             elm_object_content_set(pup, mirror); 
+//              elm_object_content_set(scroller, mirror); 
 
              e_comp_object_util_center_on_zone(pup, zone);
              evas_object_show(mirror);
@@ -227,6 +248,60 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
           } 
         i++;
      }
+
+/////////// SCREEN INFOS
+   E_Zone *zone1; Eina_List *l1 = NULL; 
+	Eina_List* l2;
+	E_Randr2_Screen* s;
+			char buf[PATH_MAX];
+   int x, y, w, h;
+  
+  EINA_LIST_FOREACH(e_randr2->screens, l2, s)
+  {				
+			
+			popup1 = elm_popup_add(e_comp->elm);
+// 			evas_object_smart_callback_add(popup1, "block,clicked", _block_clicked_cb1, popup1);
+			elm_object_style_set(popup1, "transparent");
+			evas_object_layer_set(popup1, E_LAYER_CLIENT_ABOVE);
+			evas_object_layer_set(popup1, E_LAYER_POPUP);
+			
+// 			popup1 = elm_popup_add(e_comp->elm);
+// 			popup1 = e_comp_object_util_add(popup1, E_COMP_OBJECT_TYPE_NONE);
+// 			elm_object_style_set(popup1, "transparent");
+// 			evas_object_layer_set(popup1, E_LAYER_POPUP);
+// 			evas_object_layer_set(popup1, E_LAYER_CLIENT_ABOVE);
+			
+			EINA_LIST_FOREACH(e_comp->zones, l1, zone1)
+				{
+				if (!strcmp(s->id, zone1->randr2_id)) {
+					
+						Evas_Object *lbl;
+						lbl = elm_label_add(popup1);
+						snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
+						elm_object_text_set(lbl, buf);
+			         evas_object_show(lbl);
+					
+						elm_object_content_set(popup1, lbl);
+						
+						
+// 					   evas_object_geometry_get(lbl, NULL, NULL, &w, &h);
+// 						evas_object_resize(popup1, w, h);
+						evas_object_resize(popup1, 150, 75);
+						e_zone_useful_geometry_get(zone1, &x, &y, &w, &h);
+						evas_object_move(popup1, x, y);
+						evas_object_show(popup1);
+						
+							
+						printf("%s XY: %i x %i w:%i h:%i\n", zone1->name, x, y, w, h);
+			// 			printf("DEVICE ID \t %s\n", s->id);
+			// 			printf("ZONE ID \t %s\n", zone1->randr2_id);
+					}
+				}
+
+             popups1 = eina_list_append(popups1, popup1);
+  }
+///////////
+	
 }
 
 E_API void*
