@@ -37,13 +37,13 @@ _block_clicked_cb(void* data EINA_UNUSED,
      evas_object_del(pup);
      pup = NULL;
   }
-  EINA_LIST_FREE(popups1, popup1)
-  {
-     evas_object_del(popup1);
-     popup1 = NULL;
-  }
+	EINA_LIST_FREE(popups1, popup1)
+	{
+		evas_object_del(popup1);
+		popup1 = NULL;
+	}
 }
-
+/*
 static void
 _block_clicked_cb1(void* data EINA_UNUSED,
                   Evas_Object* obj,
@@ -53,7 +53,7 @@ _block_clicked_cb1(void* data EINA_UNUSED,
   evas_object_del(obj);
 //   popup = NULL;
 
-}
+}*/
 
 void
 key_down(void* data EINA_UNUSED,
@@ -187,7 +187,7 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 // 	elm_object_content_set(scroller, content);
 	
 	
-//    e_comp_grab_input(1, 1);
+   e_comp_grab_input(1, 1);
 
    elm_object_style_set(popup, "transparent");
    evas_object_layer_set(popup, E_LAYER_CLIENT_ABOVE);
@@ -250,11 +250,15 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
      }
 
 /////////// SCREEN INFOS
-   E_Zone *zone1; Eina_List *l1 = NULL; 
-	Eina_List* l2;
+   E_Zone *zone1; 
+	Eina_List *l1 = NULL; 
+	Eina_List* l2 = NULL;
+	Eina_List* l3 = NULL;
 	E_Randr2_Screen* s;
-			char buf[PATH_MAX];
-   int x, y, w, h;
+	E_Randr2_Screen* s1;
+	char buf[PATH_MAX];
+   int x, y, w, h, ow, oh;
+// 	char mode[PATH_MAX];
   
   EINA_LIST_FOREACH(e_randr2->screens, l2, s)
   {				
@@ -274,18 +278,58 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 			EINA_LIST_FOREACH(e_comp->zones, l1, zone1)
 				{
 				if (!strcmp(s->id, zone1->randr2_id)) {
-					
+						
 						Evas_Object *lbl;
-						lbl = elm_label_add(popup1);
-						snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
+						lbl = elm_entry_add(popup1);
+						elm_entry_editable_set(lbl, EINA_FALSE);
+						Eina_Strbuf *test = NULL;
+						test = eina_strbuf_new();
+						switch (s->config.relative.mode)
+                    {
+                     case E_RANDR2_RELATIVE_UNKNOWN:
+									 eina_strbuf_append(test, "Unknown");
+                       break;
+                     case E_RANDR2_RELATIVE_NONE:
+									 eina_strbuf_append(test, "Primary");
+                       break;
+                     case E_RANDR2_RELATIVE_CLONE:
+								  eina_strbuf_append(test, "Clone<br>of:");
+								  EINA_LIST_FOREACH(e_randr2->screens, l3, s1) // FIND ALL CLONE DEVICES
+									{
+										if(s1->config.enabled == EINA_TRUE && s1->info.connected == EINA_TRUE)
+										{
+											if(s1->config.relative.mode == 1 || s1->config.relative.mode == 2)
+											{
+												printf("CLONE DEVICES \t %s\n", s1->info.name);
+												eina_strbuf_append_printf(test," [%s]" ,s1->info.name);
+											}
+										}
+									}
+                       break;
+                     case E_RANDR2_RELATIVE_TO_LEFT:
+									 eina_strbuf_append(test, "Left Of");
+								break;
+                     case E_RANDR2_RELATIVE_TO_RIGHT:
+									 eina_strbuf_append(test, "Right Of");
+								break;
+                     case E_RANDR2_RELATIVE_TO_ABOVE:
+									 eina_strbuf_append(test, "Above");
+								break;
+                     case E_RANDR2_RELATIVE_TO_BELOW:
+									 eina_strbuf_append(test, "Below");
+								break;
+                    }
+									
+						snprintf(buf, sizeof(buf), "%s - [%s] - %s", s->info.screen, s->info.name, eina_strbuf_string_get(test));
+						eina_strbuf_free(test);
 						elm_object_text_set(lbl, buf);
 			         evas_object_show(lbl);
 					
 						elm_object_content_set(popup1, lbl);
 						
 						
-// 					   evas_object_geometry_get(lbl, NULL, NULL, &w, &h);
-// 						evas_object_resize(popup1, w, h);
+					   evas_object_geometry_get(lbl, NULL, NULL, &ow, &oh);
+// 						evas_object_resize(popup1, ow, oh);
 						evas_object_resize(popup1, 150, 75);
 						e_zone_useful_geometry_get(zone1, &x, &y, &w, &h);
 						evas_object_move(popup1, x, y);
@@ -293,12 +337,12 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 						
 							
 						printf("%s XY: %i x %i w:%i h:%i\n", zone1->name, x, y, w, h);
-			// 			printf("DEVICE ID \t %s\n", s->id);
-			// 			printf("ZONE ID \t %s\n", zone1->randr2_id);
 					}
 				}
 
              popups1 = eina_list_append(popups1, popup1);
+				 
+// 						printf("CLONE DEVICE \t %i\n", s->config.relative.mode);
   }
 ///////////
 	

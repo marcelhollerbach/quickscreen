@@ -764,9 +764,7 @@ _content_source_devices(Evas_Object* parent)
   evas_object_show(tb_c);
 
   ////////////// START INHALT TABLE CONTENT ////
-int z = 0;
-  for(z=0; z<2; z++)
-  {
+
   EINA_LIST_FOREACH(e_randr2->screens, l, s)
   {
 
@@ -775,7 +773,7 @@ int z = 0;
 //       snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
 //       pdevice = strdup(buf);
 //     }
-//     if (s->info.connected == EINA_TRUE  && s->id != target_id/*&& s->info.is_lid == EINA_FALSE*/) {
+    if (s->info.connected == EINA_TRUE  && s->id != target_id/*&& s->info.is_lid == EINA_FALSE*/) {
 
       ic = elm_icon_add(tb_c);
       snprintf(buf, sizeof(buf), "%s/images/beamer.png", PACKAGE_DATA_DIR);
@@ -817,8 +815,7 @@ int z = 0;
 
       i = 1;
       x++;
-//     }
-  }
+    }
   }
   if (x == 1) {
 // 	  elm_obj_naviframe_item_pop();
