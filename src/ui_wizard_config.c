@@ -133,6 +133,7 @@ _set_relative(void* data,
   
   e_randr2_config_save();
   e_randr2_config_apply();
+  _block_clicked_cb(NULL, NULL, NULL);
 }
 
 void
@@ -183,6 +184,7 @@ _set_target_power_off(void* data EINA_UNUSED,
 
   e_randr2_config_save();
   e_randr2_config_apply();
+  _block_clicked_cb(NULL, NULL, NULL);
 }
 
 void
@@ -231,6 +233,7 @@ _set_source_power_off(void* data EINA_UNUSED,
 
   e_randr2_config_save();
   e_randr2_config_apply();
+  _block_clicked_cb(NULL, NULL, NULL);
 }
 
 void

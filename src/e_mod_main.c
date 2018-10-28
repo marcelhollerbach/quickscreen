@@ -13,7 +13,7 @@ static Evas_Object* popup;
 
 Evas_Object *popup1;
 
-static void
+void
 _block_clicked_cb(void* data EINA_UNUSED,
                   Evas_Object* obj,
                   void* event_info EINA_UNUSED)
@@ -330,13 +330,13 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 						
 					   evas_object_geometry_get(lbl, NULL, NULL, &ow, &oh);
 // 						evas_object_resize(popup1, ow, oh);
-						evas_object_resize(popup1, 150, 75);
+						evas_object_resize(popup1, 150, 50);
 						e_zone_useful_geometry_get(zone1, &x, &y, &w, &h);
-						evas_object_move(popup1, x, y);
+						evas_object_move(popup1, zone1->x + 100, zone1->y);
 						evas_object_show(popup1);
 						
 							
-						printf("%s XY: %i x %i w:%i h:%i\n", zone1->name, x, y, w, h);
+						printf("%s XY: %i x %i w:%i h:%i\n", zone1->name, zone1->x, zone1->y, zone1->w, zone1->h);
 					}
 				}
 
