@@ -59,6 +59,7 @@ _focus_out_cb(void* data,
 static void
 _cb_settings_screen_setup(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, const char *emission EINA_UNUSED, const char *source EINA_UNUSED)
 {
+   _block_clicked_cb(NULL, NULL, NULL);
    e_configure_registry_call("screen/screen_setup", NULL, NULL);
 }
 

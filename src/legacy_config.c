@@ -16,6 +16,7 @@ _changed_cb(void* data, Evas_Object* obj, void* event_info)
 static Evas_Object*
 _basic_create(E_Config_Dialog* cfd, Evas* evas, E_Config_Dialog_Data* cfdata)
 {
+  show_screeninfos();
   e_dialog_resizable_set(cfd->dia, 1);
 
   cfdata->wizard = wizard_config_create(cfd->dia->win);
@@ -47,6 +48,7 @@ _advanced_create(E_Config_Dialog* cfd,
                  Evas* evas EINA_UNUSED,
                  E_Config_Dialog_Data* cfdata)
 {
+  show_screeninfos();
   e_dialog_resizable_set(cfd->dia, 1);
 
   cfdata->advanced = advanced_settings_create(cfd->dia->win);
@@ -83,6 +85,7 @@ static void
 _free_data(E_Config_Dialog* cfd EINA_UNUSED, E_Config_Dialog_Data* cfdata)
 {
   free(cfdata);
+  free_popup_screeninfo();
 }
 
 E_Config_Dialog*

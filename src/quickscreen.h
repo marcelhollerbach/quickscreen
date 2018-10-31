@@ -19,6 +19,9 @@ Evas_Object*     advanced_settings_create(Evas_Object *win);
 void             advanced_settings_apply(Evas_Object *obj);
 Evas_Object*     wizard_config_create(Evas_Object *win);
 void             wizard_config_apply(Evas_Object *obj);
+void             free_popup_screeninfo();
+Eina_Strbuf*     find_relto_name(char *rel);
+void             show_screeninfos();
 
 void      _block_clicked_cb(void* data EINA_UNUSED, Evas_Object* obj, void* event_info EINA_UNUSED);
 #define _(a) a
