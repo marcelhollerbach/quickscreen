@@ -57,7 +57,7 @@ _focus_out_cb(void* data,
               void* event_info EINA_UNUSED);
 
 static void
-_cb_settings_screen_setup(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, const char *emission EINA_UNUSED, const char *source EINA_UNUSED)
+_cb_settings_screen_setup(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED, void* event_info EINA_UNUSED)
 {
    _block_clicked_cb(NULL, NULL, NULL);
    e_configure_registry_call("screen/screen_setup", NULL, NULL);
@@ -98,22 +98,8 @@ _set_relative(void* data,
     e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs);
   }
   eina_stringshare_replace(&cs->rel_to, source_id);
-  //         cs->rel_align = cs2->rel_align;
-  //         cs->mode_w = cs2->mode_w;
-  //         cs->mode_h = cs2->mode_h;
-  //         cs->mode_refresh = cs2->mode_refresh;
   cs->rotation = 0;
-  //         cs->priority = cs2->priority;
-  // 		  		 cs->rel_to =
-  // eina_stringshare_add("LVDS-1/00ffffffffffff00367f2500000000002d0c010490241400eaa8e099574b92251c505400000001010101010101010101010101010101403880b4703840403c3c550068c810000018403880807138aa408080880068c810000018000000fc004e76696469612044656661756c000000fc007420466c61742050616e656c00001f");
-  
   cs->rel_mode = data;
-  //         if (cs->profile) eina_stringshare_del(cs->profile);
-  //         cs->profile = NULL;
-  //         if (cs2->profile) cs->profile = eina_stringshare_add(cs2->profile);
-  //         cs->scale_multiplier = cs2->scale_multiplier;
-  //         printf("APPLY %s .... rel mode %i\n", cs->id, cs->rel_mode);
-  //         cs->enabled = cs2->enabled;
   cs->enabled = EINA_TRUE;
   
 
@@ -159,15 +145,9 @@ _set_target_power_off(void* data EINA_UNUSED,
   eina_stringshare_replace(&cs->rel_to, target_id);
 
   cs->rotation = 0;
-
   cs->priority = 0;
-
   cs->rel_mode = E_RANDR2_RELATIVE_NONE;
-
   cs->enabled = EINA_FALSE;
-
-  
-  
   cs2 = _screen_config_randr_id_find(source_id);
 
   if (!cs2) {
@@ -179,11 +159,8 @@ _set_target_power_off(void* data EINA_UNUSED,
   eina_stringshare_replace(&cs2->rel_to, source_id);
 
   cs2->rotation = 0;
-
   cs2->priority = 100;
-
   cs2->rel_mode = E_RANDR2_RELATIVE_NONE;
-
   cs2->enabled = EINA_TRUE;
 
   e_randr2_config_save();
@@ -210,13 +187,9 @@ _set_source_power_off(void* data EINA_UNUSED,
   eina_stringshare_replace(&cs->rel_to, target_id);
 
   cs->rotation = 0;
-
   cs->priority = 100;
-
   cs->rel_mode = E_RANDR2_RELATIVE_NONE;
-
   cs->enabled = EINA_TRUE;
-
   cs2 = _screen_config_randr_id_find(source_id);
 
   if (!cs2) {
@@ -228,11 +201,8 @@ _set_source_power_off(void* data EINA_UNUSED,
   eina_stringshare_replace(&cs2->rel_to, source_id);
 
   cs2->rotation = 0;
-
   cs2->priority = 0;
-
   cs2->rel_mode = E_RANDR2_RELATIVE_NONE;
-
   cs2->enabled = EINA_FALSE;
 
   e_randr2_config_save();
@@ -241,14 +211,14 @@ _set_source_power_off(void* data EINA_UNUSED,
 }
 
 void
-_focus_in_cb(void* data, Evas_Object* obj, void* event_info EINA_UNUSED)
+_focus_in_cb(void* data, Evas_Object* obj EINA_UNUSED, void* event_info EINA_UNUSED)
 {
   evas_object_color_set(data, 51, 153, 255, 255);
   printf("FOCUS IN\n");
 }
 
 void
-_focus_out_cb(void* data, Evas_Object* obj, void* event_info EINA_UNUSED)
+_focus_out_cb(void* data, Evas_Object* obj EINA_UNUSED, void* event_info EINA_UNUSED)
 {
   evas_object_color_set(data, 255, 255, 255, 255);
   printf("FOCUS OUT\n");
@@ -502,7 +472,7 @@ _page_modes(void* data,
 }
 
 //////////TEST DND///////////////
-
+/*
 static void
 _cleanup_cb(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_info EINA_UNUSED)
 {  
@@ -518,12 +488,12 @@ _cleanup_cb(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_info 
 
  button_mask = evas_pointer_button_down_mask_get(evas_object_evas_get(data));
  
-        if (button_mask == 1/* && cx >= 0 && cy >= 0*/)
+        if (button_mask == 1)
         {
 				evas_object_move(obj, mx - (cw/2),  my - (ch/2));
 // 				printf("NEW OBJ GEO X:%i Y:%i\n", mx - cx,  my - cy);
         }
-}
+}*/
 
 /*
 Evas_Object*
@@ -705,8 +675,8 @@ _content_target_devices(Evas_Object* parent)
       evas_object_smart_callback_add(bt, "clicked", _set_target_id, s->id);
       evas_object_smart_callback_add(bt, "pressed", _focus_in_cb, ic);
       evas_object_smart_callback_add(bt, "unpressed", _focus_out_cb, ic);
-      elm_object_signal_callback_add(bt, "focused", "*", _focus_in_cb, NULL);
-      elm_object_signal_callback_add(bt, "unfocused", "*", _focus_out_cb, NULL);
+//       elm_object_signal_callback_add(bt, "focused", "*", _focus_in_cb, NULL);
+//       elm_object_signal_callback_add(bt, "unfocused", "*", _focus_out_cb, NULL);
       elm_table_pack(tb_c, bt, x, 1, 1, 2);
       evas_object_show(bt);
 
@@ -764,7 +734,6 @@ _content_source_devices(Evas_Object* parent)
   Eina_List* l;
   E_Randr2_Screen* s;
   int x = 0;
-  int i = 0;
 
   Evas_Object *tb_c, *tb_m, *tb_t;
   Evas_Object* lbl;
@@ -864,7 +833,6 @@ _content_source_devices(Evas_Object* parent)
 //       pdevice = strdup(buf);
 //     }
     if (s->info.connected == EINA_TRUE  && s->id != target_id/*&& s->info.is_lid == EINA_FALSE*/) {
-
       ic = elm_icon_add(tb_c);
       snprintf(buf, sizeof(buf), "%s/images/beamer.png", PACKAGE_DATA_DIR);
       elm_image_file_set(ic, buf, NULL);
@@ -903,7 +871,6 @@ _content_source_devices(Evas_Object* parent)
       elm_table_pack(tb_c, lbl, x, 2, 1, 1);
       evas_object_show(lbl);
 
-      i = 1;
       x++;
     }
   }
@@ -1198,10 +1165,6 @@ wizard_config_create(Evas_Object* win)
       }
     }
   }
-
-//   if (count == 1) {
-//     content = _content_modes(nf);
-//   } else
     content = _content_target_devices(nf);
 // content = _content_dnd(nf);
 

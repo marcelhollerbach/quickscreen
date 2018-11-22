@@ -34,11 +34,7 @@ _block_clicked_cb(void* data EINA_UNUSED,
     evas_object_del(pup);
     pup = NULL;
   }
-  // 	EINA_LIST_FREE(popups_screeninfo, popup_screeninfo)
-  // 	{
-  // 		evas_object_del(popup_screeninfo);
-  // 		popup_screeninfo = NULL;
-  // 	}
+
   free_popup_screeninfo();
 }
 
@@ -60,7 +56,6 @@ key_down(void* data EINA_UNUSED,
 {
   Evas_Event_Key_Down* ev = event_info;
   const char* k = ev->keyname;
-  //   Evas_Object *pup;
 
   if (!strcmp(k, "Escape")) {
     Evas_Object *pup, *mirror;
@@ -84,7 +79,7 @@ key_down(void* data EINA_UNUSED,
       popup_screeninfo = NULL;
     }
     e_comp_ungrab_input(1, 1);
-    //     }
+
   }
 }
 
@@ -117,10 +112,7 @@ popup_resized(void* data,
       /*center popup on first zone*/
       evas_object_resize(popup, zone->w, zone->h);
       e_comp_object_util_center_on_zone(popup, zone);
-
-      // 				 evas_object_geometry_get(popup, 0, 0, &w,
-      // &h); 				 evas_object_move(popup, zone->x+((zone->w/2)-(w/2)), zone->y +
-      // ((zone->h/2)-(h/2)));
+		
       evas_object_show(popup);
     } else {
       /*create mirror for each additional zone*/
@@ -130,14 +122,9 @@ popup_resized(void* data,
 
       pup = elm_popup_add(e_comp->elm);
 
-      // 			  Evas_Object *scroller = elm_scroller_add(pup);
-      // 			  evas_object_size_hint_min_set(scroller, zone->w
-      // / 4, zone->h / 3); 			  elm_object_content_set(popup, scroller);
-
       evas_object_geometry_get(obj, 0, 0, &w, &h);
       evas_object_size_hint_min_set(mirror, w, h);
 
-      // 			  printf("SIZE POPUP: %i %i\n\n", w, h);
       elm_object_style_set(pup, "transparent");
       evas_object_layer_set(pup, E_LAYER_POPUP);
 
@@ -145,9 +132,6 @@ popup_resized(void* data,
         pup, "block,clicked", _block_clicked_cb, popup);
 
       elm_object_content_set(pup, mirror);
-      //            elm_object_content_set(scroller, mirror);
-
-      //            e_comp_object_util_center_on_zone(pup, zone);
 
       evas_object_resize(pup, zone->w, zone->h);
       evas_object_geometry_get(pup, 0, 0, &w, &h);
@@ -294,12 +278,8 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
   Eina_List* l = NULL;
   int w = 0, h = 0;
   content = wizard_config_create(e_comp->elm);
-  //   display_popup(content);
+
   popup = elm_popup_add(e_comp->elm);
-  // 	Evas_Object *scroller = elm_scroller_add(popup);
-  // 	evas_object_size_hint_min_set(scroller, zone->w / 4, zone->h / 3);
-  // 	elm_object_content_set(popup, scroller);
-  // 	elm_object_content_set(scroller, content);
 
   e_comp_grab_input(1, 1);
 
@@ -317,7 +297,6 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
     content, EVAS_CALLBACK_RESIZE, popup_resized, popup);
 
   elm_object_content_set(popup, content);
-  // 	elm_object_content_set(scroller, content);
 
   int i = 0;
 
@@ -326,11 +305,10 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
     if (i == 0) {
       evas_object_resize(popup, zone->w, zone->h);
       e_comp_object_util_center_on_zone(popup, zone);
-      // 				 evas_object_geometry_get(popup, 0, 0, &w,
-      // &h); 				 evas_object_move(popup, zone->x+((zone->w/2)-(w/2)), zone->y +
-      // ((zone->h/2)-(h/2)));
+		
       printf("OBJ SIZE W %i  H %i\n", w, h);
       printf("1 ZONE %s %i ZONE H %i\n", zone->name, zone->w / 2, zone->h / 2);
+		
       evas_object_show(popup);
     } else {
       Evas_Object* mirror = evas_object_image_filled_add(e_comp->evas);
@@ -339,10 +317,6 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 
       Evas_Object* pup = elm_popup_add(e_comp->elm);
 
-      // 				 Evas_Object *scroller =
-      // elm_scroller_add(pup); 				 evas_object_size_hint_min_set(scroller, zone->w
-      // / 4, zone->h / 3); 				 elm_object_content_set(popup, scroller);
-
       elm_object_style_set(pup, "transparent");
       evas_object_layer_set(pup, E_LAYER_POPUP);
 
@@ -350,13 +324,10 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
         pup, "block,clicked", _block_clicked_cb, mirror);
 
       elm_object_content_set(pup, mirror);
-      //              elm_object_content_set(scroller, mirror);
 
       evas_object_resize(pup, zone->w, zone->h);
       e_comp_object_util_center_on_zone(pup, zone);
-      // 				 evas_object_geometry_get(pup, 0, 0, &w,
-      // &h); 				 evas_object_move(pup, zone->x+((zone->w/2)-(w/2)), zone->y +
-      // ((zone->h/2)-(h/2)));
+		
       printf("OBJ SIZE W %i  H %i\n", w, h);
       evas_object_show(mirror);
       evas_object_show(pup);
