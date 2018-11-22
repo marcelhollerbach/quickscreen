@@ -135,6 +135,9 @@ _set_relative(void* data,
   e_randr2_config_save();
   e_randr2_config_apply();
   _block_clicked_cb(NULL, NULL, NULL);
+  /// TODO REOPEN QUICKSCREEN
+//   sleep(5);
+//   qs_key(NULL, NULL);
 }
 
 void
@@ -497,6 +500,89 @@ _page_modes(void* data,
   it = elm_naviframe_item_push(nf, "Select Mode", NULL, NULL, content, NULL);
   elm_naviframe_item_title_enabled_set(it, EINA_FALSE, EINA_FALSE);
 }
+
+//////////TEST DND///////////////
+
+static void
+_cleanup_cb(void *data, Evas *e EINA_UNUSED, Evas_Object *obj, void *event_info EINA_UNUSED)
+{  
+   Evas_Coord mx, my, cx, cy, cw, ch, nx, ny, lx, ly, lw, lh, mx1, my1;
+
+				evas_pointer_canvas_xy_get(evas_object_evas_get(data), &mx, &my);
+				evas_object_geometry_get(obj, &cx, &cy, &cw, &ch);
+// 				evas_object_geometry_get(ec->layout, &lx, &ly, &lw, &lh);
+				printf("MOUSE X:%i Y:%i\n", mx, my);
+				printf("OBJ GEO X:%i Y:%i\n", cx, cy);
+
+ int button_mask;
+
+ button_mask = evas_pointer_button_down_mask_get(evas_object_evas_get(data));
+ 
+        if (button_mask == 1/* && cx >= 0 && cy >= 0*/)
+        {
+				evas_object_move(obj, mx - (cw/2),  my - (ch/2));
+// 				printf("NEW OBJ GEO X:%i Y:%i\n", mx - cx,  my - cy);
+        }
+}
+
+/*
+Evas_Object*
+_content_dnd(Evas_Object* parent)
+{
+  Eina_List* l *tmp;
+  E_Randr2_Screen* s;
+  Evas_Object *rect, *gd, *lbl;
+  char buf[PATH_MAX];
+  
+   gd = elm_grid_add(parent);
+   elm_grid_size_set(gd, 500, 300);
+   evas_object_size_hint_weight_set(gd, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+  evas_object_size_hint_align_set(gd, EVAS_HINT_FILL, EVAS_HINT_FILL);
+  evas_object_size_hint_min_set(gd, 500, 300);
+//   evas_object_color_set(gd, 1, 153, 255, 255);
+int i = 0;
+   EINA_LIST_FOREACH(e_randr2->screens, l, s)
+  {
+	  if (s->info.connected == EINA_TRUE) {
+  rect = evas_object_rectangle_add(gd);
+//   evas_object_size_hint_align_set(rect, EVAS_HINT_FILL, EVAS_HINT_FILL);
+//   evas_object_size_hint_weight_set(rect, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+  
+//   evas_object_size_hint_min_set(rect, 100, 75);
+//   evas_object_size_hint_max_set(rect, 100, 75);
+  evas_object_color_set(rect, 51, 153, 255, 128);
+  evas_object_show(rect);
+  
+  lbl = elm_label_add(gd);
+//   evas_object_size_hint_weight_set(lbl, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
+  evas_object_size_hint_align_set(lbl, 0.0, 0.0);
+  
+      snprintf(buf, sizeof(buf), "%s - [%s]", s->info.screen, s->info.name);
+  elm_object_text_set(lbl, buf);
+  evas_object_color_set(lbl, 255, 255, 255, 255);
+  evas_object_show(lbl);
+  
+   elm_grid_pack(gd, lbl, i, i, s->config.mode.w/10, s->config.mode.h/10);
+   elm_grid_pack(gd, rect, i, i, s->config.mode.w/10, s->config.mode.h/10);
+	
+  
+  evas_object_event_callback_add(rect, EVAS_CALLBACK_MOUSE_MOVE , _cleanup_cb, gd);
+//   evas_object_event_callback_add(lbl, EVAS_CALLBACK_MOUSE_MOVE , _cleanup_cb, gd);
+//   elm_box_pack_end(box, rect);
+	i=i+100;
+	  }
+  }
+
+
+  
+  evas_object_show(gd);
+  
+  
+  return gd;
+}*/
+
+//////////END TEST DND ////////////////
+
 
 Evas_Object*
 _content_target_devices(Evas_Object* parent)
@@ -1117,6 +1203,7 @@ wizard_config_create(Evas_Object* win)
 //     content = _content_modes(nf);
 //   } else
     content = _content_target_devices(nf);
+// content = _content_dnd(nf);
 
   it = elm_naviframe_item_push(nf, "Select Target Device", NULL, NULL, content, NULL);
   elm_naviframe_item_title_enabled_set(it, EINA_FALSE, EINA_FALSE);
