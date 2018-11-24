@@ -296,7 +296,7 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
   evas_object_event_callback_add(
     content, EVAS_CALLBACK_RESIZE, popup_resized, popup);
 
-  show_screeninfos();
+//   show_screeninfos();
   
   elm_object_content_set(popup, content);
 
