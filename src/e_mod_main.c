@@ -296,6 +296,8 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
   evas_object_event_callback_add(
     content, EVAS_CALLBACK_RESIZE, popup_resized, popup);
 
+  show_screeninfos();
+  
   elm_object_content_set(popup, content);
 
   int i = 0;
@@ -347,7 +349,6 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
            zone->h);
   }
 
-  show_screeninfos();
 }
 
 E_API void*
