@@ -164,7 +164,6 @@ find_relto_name(char* rel)
   EINA_LIST_FOREACH(e_randr2->screens, l3, s1)
   {
     if (!strcmp(rel, s1->id)) {
-      printf("TO DEVICES \t %s\n", s1->info.name);
       eina_strbuf_append_printf(
         rel_to_name, " %s [%s]", s1->info.screen, s1->info.name);
     }
@@ -296,21 +295,19 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
   evas_object_event_callback_add(
     content, EVAS_CALLBACK_RESIZE, popup_resized, popup);
 
-//   show_screeninfos();
-  
+  show_screeninfos();
+
   elm_object_content_set(popup, content);
 
   int i = 0;
 
   EINA_LIST_FOREACH(e_comp->zones, l, zone)
   {
+      printf("ZONENAME: %s -> H:%i W:%i\n", zone->name, zone->w, zone->h);
+		
     if (i == 0) {
       evas_object_resize(popup, zone->w, zone->h);
-      e_comp_object_util_center_on_zone(popup, zone);
-		
-      printf("OBJ SIZE W %i  H %i\n", w, h);
-      printf("1 ZONE %s %i ZONE H %i\n", zone->name, zone->w / 2, zone->h / 2);
-		
+      e_comp_object_util_center_on_zone(popup, zone);		
       evas_object_show(popup);
     } else {
       Evas_Object* mirror = evas_object_image_filled_add(e_comp->evas);
@@ -330,7 +327,6 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
       evas_object_resize(pup, zone->w, zone->h);
       e_comp_object_util_center_on_zone(pup, zone);
 		
-      printf("OBJ SIZE W %i  H %i\n", w, h);
       evas_object_show(mirror);
       evas_object_show(pup);
 
@@ -338,15 +334,8 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
       mirrors = eina_list_append(mirrors, mirror);
       // append popup to list of mirrored popups
       popups = eina_list_append(popups, pup);
-      printf("QUICKSCREEN MIRROR\n");
     }
     i++;
-    printf("ZONE %s x=%i y=%i w=%i h=%i\n",
-           zone->name,
-           zone->x,
-           zone->y,
-           zone->w,
-           zone->h);
   }
 
 }
