@@ -802,7 +802,7 @@ _content_target_devices(Evas_Object* parent)
   evas_object_show(lbl);
 
   bt_a = elm_button_add(parent);
-//   elm_object_focus_allow_set(bt_a, EINA_FALSE); // If enable first focus with keyboard is broken
+  elm_object_focus_allow_set(bt_a, EINA_FALSE); // If enable first focus with keyboard is broken
   evas_object_color_set(bt_a, 255, 255, 255, 255);
   evas_object_size_hint_weight_set(bt_a, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_a, 1, 0.5);
@@ -1145,12 +1145,13 @@ _content_expand(Evas_Object* parent)
   char buf[PATH_MAX];
 
   tb_m = elm_table_add(parent);
-  //elm_object_focus_allow_set(tb_m, EINA_FALSE);
+  elm_object_focus_allow_set(tb_m, EINA_FALSE);
   evas_object_size_hint_align_set(tb_m, EVAS_HINT_FILL, EVAS_HINT_FILL);
   evas_object_size_hint_weight_set(tb_m, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_show(tb_m);
 
   rect = evas_object_rectangle_add(evas_object_evas_get(parent));
+  elm_object_focus_allow_set(rect, EINA_FALSE);
   evas_object_size_hint_align_set(rect, EVAS_HINT_FILL, EVAS_HINT_FILL);
   evas_object_size_hint_weight_set(rect, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_color_set(rect, 51, 153, 255, 255);
@@ -1158,6 +1159,7 @@ _content_expand(Evas_Object* parent)
   evas_object_show(rect);
 
   rect = evas_object_rectangle_add(evas_object_evas_get(parent));
+  elm_object_focus_allow_set(rect, EINA_FALSE);
   evas_object_size_hint_align_set(rect, EVAS_HINT_FILL, EVAS_HINT_FILL);
   evas_object_size_hint_weight_set(rect, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_color_set(rect, 51, 153, 255, 0);
@@ -1166,6 +1168,7 @@ _content_expand(Evas_Object* parent)
   evas_object_show(rect);
 
   tb_t = elm_table_add(parent);
+  elm_object_focus_allow_set(tb_t, EINA_FALSE);
   evas_object_size_hint_align_set(tb_t, EVAS_HINT_FILL, EVAS_HINT_FILL);
   //   evas_object_size_hint_weight_set(tb_t, EVAS_HINT_EXPAND,
   //   EVAS_HINT_EXPAND);
@@ -1173,6 +1176,7 @@ _content_expand(Evas_Object* parent)
   evas_object_show(tb_t);
 
   lbl = elm_label_add(parent);
+  elm_object_focus_allow_set(lbl, EINA_FALSE);
   evas_object_size_hint_weight_set(lbl, 0.5, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(lbl, 0.5, 0.5);
   snprintf(
@@ -1185,7 +1189,7 @@ _content_expand(Evas_Object* parent)
   evas_object_show(lbl);
 
   bt_b = elm_button_add(parent);
-  //elm_object_focus_allow_set(bt_b, EINA_FALSE);
+  elm_object_focus_allow_set(bt_b, EINA_FALSE);
   evas_object_color_set(bt_b, 255, 255, 255, 255);
   evas_object_size_hint_weight_set(bt_b, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_b, 0, 0.5);
@@ -1195,7 +1199,7 @@ _content_expand(Evas_Object* parent)
   evas_object_show(bt_b);
 
   bt_a = elm_button_add(parent);
-  //elm_object_focus_allow_set(bt_a, EINA_FALSE);
+  elm_object_focus_allow_set(bt_a, EINA_FALSE);
   evas_object_color_set(bt_a, 255, 255, 255, 255);
   evas_object_size_hint_weight_set(bt_a, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_a, 1, 0.5);
@@ -1206,12 +1210,14 @@ _content_expand(Evas_Object* parent)
   evas_object_show(bt_a);
 
   box_c = elm_box_add(parent);
+  elm_object_focus_allow_set(box_c, EINA_FALSE);
   evas_object_size_hint_align_set(box_c, EVAS_HINT_FILL, EVAS_HINT_FILL);
   evas_object_size_hint_weight_set(box_c, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   elm_table_pack(tb_m, box_c, 0, 1, 1, 1);
   evas_object_show(box_c);
 
   tb_c = elm_table_add(parent);
+  elm_object_focus_allow_set(tb_c, EINA_FALSE);
   elm_table_homogeneous_set(tb_c, EINA_TRUE);
   elm_table_padding_set(tb_c, 1, 1);
   evas_object_size_hint_align_set(tb_c, EVAS_HINT_FILL, EVAS_HINT_FILL);
@@ -1222,6 +1228,7 @@ _content_expand(Evas_Object* parent)
   ////////////// START INHALT TABLE CONTENT ////
   ///
   ic = elm_image_add(parent);
+  elm_object_focus_allow_set(ic, EINA_FALSE);
   snprintf(buf, sizeof(buf), "%s/images/above.png", PACKAGE_DATA_DIR);
   elm_image_file_set(ic, buf, NULL);
   evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(165), ELM_SCALE_SIZE(62));
@@ -1247,6 +1254,7 @@ _content_expand(Evas_Object* parent)
   ///////////
 
   ic = elm_image_add(parent);
+  elm_object_focus_allow_set(ic, EINA_FALSE);
   snprintf(buf, sizeof(buf), "%s/images/left_of.png", PACKAGE_DATA_DIR);
   elm_image_file_set(ic, buf, NULL);
   evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(165), ELM_SCALE_SIZE(62));
@@ -1272,6 +1280,7 @@ _content_expand(Evas_Object* parent)
   ///////////
 
   ic = elm_image_add(parent);
+  elm_object_focus_allow_set(ic, EINA_FALSE);
   snprintf(buf, sizeof(buf), "%s/images/monitor.png", PACKAGE_DATA_DIR);
   elm_image_file_set(ic, buf, NULL);
   evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(165), ELM_SCALE_SIZE(62));
@@ -1304,11 +1313,12 @@ _content_expand(Evas_Object* parent)
   evas_object_event_callback_add(bt_rightof, EVAS_CALLBACK_KEY_DOWN, _on_keydown, "RIGHT_OF");
   elm_table_pack(tb_c, bt_rightof, 2, 1, 1, 1);
   evas_object_show(bt_rightof);
-//   elm_object_focus_set(bt_rightof, EINA_TRUE);
+  elm_object_focus_set(bt_rightof, EINA_TRUE);
 
   ///////////
 
   ic = elm_image_add(parent);
+  elm_object_focus_allow_set(ic, EINA_FALSE);
   snprintf(buf, sizeof(buf), "%s/images/below.png", PACKAGE_DATA_DIR);
   elm_image_file_set(ic, buf, NULL);
   evas_object_size_hint_min_set(ic, ELM_SCALE_SIZE(165), ELM_SCALE_SIZE(62));
