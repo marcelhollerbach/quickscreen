@@ -395,7 +395,7 @@ _content_modes(Evas_Object* parent)
   rect = evas_object_rectangle_add(evas_object_evas_get(parent));
   evas_object_size_hint_align_set(rect, EVAS_HINT_FILL, EVAS_HINT_FILL);
   evas_object_size_hint_weight_set(rect, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-  evas_object_color_set(rect, r, g, b, a);
+  evas_object_color_set(rect, r2, g2, b2, a2);
   elm_table_pack(tb_m, rect, 0, 0, 1, 1);
   evas_object_show(rect);
 
@@ -1253,7 +1253,7 @@ _content_expand(Evas_Object* parent)
   evas_object_color_set(bt_above, r1, g1, b1, a1);
   evas_object_size_hint_weight_set(bt_above, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_above, EVAS_HINT_FILL, EVAS_HINT_FILL);
-  evas_object_smart_callback_add(bt_above, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_ABOVE);
+//   evas_object_smart_callback_add(bt_above, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_ABOVE);
   evas_object_smart_callback_add(bt_above, "pressed", _focus_in_cb, ic);
   evas_object_smart_callback_add(bt_above, "unpressed", _focus_out_cb, ic);
   evas_object_smart_callback_add(bt_above, "focused", _focus_in_cb, ic);
@@ -1278,7 +1278,7 @@ _content_expand(Evas_Object* parent)
   evas_object_color_set(bt_leftof, r1, g1, b1, a1);
   evas_object_size_hint_weight_set(bt_leftof, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_leftof, EVAS_HINT_FILL, EVAS_HINT_FILL);
-  evas_object_smart_callback_add(bt_leftof, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_LEFT);
+//   evas_object_smart_callback_add(bt_leftof, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_LEFT);
   evas_object_smart_callback_add(bt_leftof, "pressed", _focus_in_cb, ic);
   evas_object_smart_callback_add(bt_leftof, "unpressed", _focus_out_cb, ic);
   evas_object_smart_callback_add(bt_leftof, "focused", _focus_in_cb, ic);
@@ -1329,7 +1329,7 @@ _content_expand(Evas_Object* parent)
   evas_object_color_set(bt_rightof, r1, g1, b1, a1);
   evas_object_size_hint_weight_set(bt_rightof, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_rightof, EVAS_HINT_FILL, EVAS_HINT_FILL);
-  evas_object_smart_callback_add(bt_rightof, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_RIGHT);
+//   evas_object_smart_callback_add(bt_rightof, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_RIGHT);
   evas_object_smart_callback_add(bt_rightof, "pressed", _focus_in_cb, ic);
   evas_object_smart_callback_add(bt_rightof, "unpressed", _focus_out_cb, ic);
   evas_object_smart_callback_add(bt_rightof, "focused", _focus_in_cb, ic);
