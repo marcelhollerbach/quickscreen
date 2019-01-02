@@ -58,98 +58,25 @@ key_down(void* data EINA_UNUSED,
   const char* k = ev->keyname;
 
   if (!strcmp(k, "Escape")) {
-    Evas_Object *pup, *mirror;
+		Evas_Object *pup, *mirror /*, *popup_screeninfo*/;
 
-    evas_object_del(popup);
-    popup = NULL;
+		evas_object_del(popup);
+		popup = NULL;
 
-    EINA_LIST_FREE(mirrors, mirror)
-    {
-      evas_object_del(mirror);
-      mirror = NULL;
-    }
-    EINA_LIST_FREE(popups, pup)
-    {
-      evas_object_del(pup);
-      pup = NULL;
-    }
-    EINA_LIST_FREE(popups_screeninfo, popup_screeninfo)
-    {
-      evas_object_del(popup_screeninfo);
-      popup_screeninfo = NULL;
-    }
-    e_comp_ungrab_input(1, 1);
+		e_comp_ungrab_input(1, 1);
+		EINA_LIST_FREE(mirrors, mirror)
+		{
+			evas_object_del(mirror);
+			mirror = NULL;
+		}
+		EINA_LIST_FREE(popups, pup)
+		{
+			evas_object_del(pup);
+			pup = NULL;
+		}
 
-  }
-}
+		free_popup_screeninfo();
 
-static void
-popup_resized(void* data,
-              Evas* e EINA_UNUSED,
-              Evas_Object* obj,
-              void* event_data EINA_UNUSED)
-{
-  E_Zone* zone;
-  Eina_List* l = NULL;
-  Evas_Object *popup = data, *pup, *mirror;
-  /*Remove previous mirrors*/
-  EINA_LIST_FREE(mirrors, mirror)
-  {
-    evas_object_del(mirror);
-    mirror = NULL;
-  }
-  /*Remove previous mirrored popups*/
-  EINA_LIST_FREE(popups, pup)
-  {
-    evas_object_del(pup);
-    pup = NULL;
-  }
-  int i = 0, h = 0, w = 0;
-
-  EINA_LIST_FOREACH(e_comp->zones, l, zone)
-  {
-    if (i == 0) {
-      /*center popup on first zone*/
-      evas_object_resize(popup, zone->w, zone->h);
-      e_comp_object_util_center_on_zone(popup, zone);
-		
-      evas_object_show(popup);
-    } else {
-      /*create mirror for each additional zone*/
-      mirror = evas_object_image_filled_add(e_comp->evas);
-      evas_object_image_source_set(mirror, obj);
-      evas_object_image_source_events_set(mirror, EINA_TRUE);
-
-      pup = elm_popup_add(e_comp->elm);
-
-      evas_object_geometry_get(obj, 0, 0, &w, &h);
-      evas_object_size_hint_min_set(mirror, w, h);
-
-      elm_object_style_set(pup, "transparent");
-      evas_object_layer_set(pup, E_LAYER_POPUP);
-
-      evas_object_smart_callback_add(
-        pup, "block,clicked", _block_clicked_cb, popup);
-
-      elm_object_content_set(pup, mirror);
-
-      evas_object_resize(pup, zone->w, zone->h);
-      evas_object_geometry_get(pup, 0, 0, &w, &h);
-      evas_object_move(pup,
-                       zone->x + ((zone->w / 2) - (w / 2)),
-                       zone->y + ((zone->h / 2) - (h / 2)));
-      evas_object_show(mirror);
-      evas_object_show(pup);
-
-      /*append mirror to list of mirrors*/
-      mirrors = eina_list_append(mirrors, mirror);
-      /*append popup to list of mirrored popups*/
-      popups = eina_list_append(popups, pup);
-
-      if (!mirror)
-        printf("Mirror is null\n");
-    }
-    i++;
   }
 }
 
@@ -269,6 +196,79 @@ show_screeninfos()
   }
 }
 
+
+
+/*
+static void
+popup_resized(void* data,
+              Evas* e EINA_UNUSED,
+              Evas_Object* obj,
+              void* event_data EINA_UNUSED)
+{
+  E_Zone* zone;
+  Eina_List* l = NULL;
+  Evas_Object *popup = data, *pup, *mirror;
+  //Remove previous mirrors
+  EINA_LIST_FREE(mirrors, mirror)
+  {
+    evas_object_del(mirror);
+    mirror = NULL;
+  }
+  //Remove previous mirrored popups
+  EINA_LIST_FREE(popups, pup)
+  {
+    evas_object_del(pup);
+    pup = NULL;
+  }
+  int i = 0, h = 0, w = 0;
+
+  EINA_LIST_FOREACH(e_comp->zones, l, zone)
+  {
+    if (i == 0) {
+      //center popup on first zone
+      evas_object_resize(popup, zone->w, zone->h);
+      e_comp_object_util_center_on_zone(popup, zone);
+		
+      evas_object_show(popup);
+    } else {
+      //create mirror for each additional zone
+      mirror = evas_object_image_filled_add(e_comp->evas);
+      evas_object_image_source_set(mirror, obj);
+      evas_object_image_source_events_set(mirror, EINA_TRUE);
+
+      pup = elm_popup_add(e_comp->elm);
+
+      evas_object_geometry_get(obj, 0, 0, &w, &h);
+      evas_object_size_hint_min_set(mirror, w, h);
+
+      elm_object_style_set(pup, "transparent");
+      evas_object_layer_set(pup, E_LAYER_POPUP);
+
+      evas_object_smart_callback_add(
+        pup, "block,clicked", _block_clicked_cb, popup);
+
+      elm_object_content_set(pup, mirror);
+
+      evas_object_resize(pup, zone->w, zone->h);
+      evas_object_geometry_get(pup, 0, 0, &w, &h);
+      evas_object_move(pup,
+                       zone->x + ((zone->w / 2) - (w / 2)),
+                       zone->y + ((zone->h / 2) - (h / 2)));
+      evas_object_show(mirror);
+      evas_object_show(pup);
+
+      //append mirror to list of mirrors
+      mirrors = eina_list_append(mirrors, mirror);
+      //append popup to list of mirrored popups
+      popups = eina_list_append(popups, pup);
+
+      if (!mirror)
+        printf("Mirror is null\n");
+    }
+    i++;
+  }
+}*/
+
 void
 qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 {
@@ -277,6 +277,8 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
   Eina_List* l = NULL;
   int w = 0, h = 0;
   content = wizard_config_create(e_comp->elm);
+  
+  show_screeninfos();
 
   popup = elm_popup_add(e_comp->elm);
 
@@ -292,10 +294,9 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
     popup, EVAS_CALLBACK_KEY_DOWN, key_down, popup);
 
   /*add resize callback for popup*/
-  evas_object_event_callback_add(
-    content, EVAS_CALLBACK_RESIZE, popup_resized, popup);
+//   evas_object_event_callback_add(
+//     content, EVAS_CALLBACK_RESIZE, popup_resized, popup);
 
-  show_screeninfos();
 
   elm_object_content_set(popup, content);
 
@@ -307,7 +308,7 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
 		
     if (i == 0) {
       evas_object_resize(popup, zone->w, zone->h);
-      e_comp_object_util_center_on_zone(popup, zone);		
+      e_comp_object_util_center_on_zone(popup, zone);
       evas_object_show(popup);
     } else {
       Evas_Object* mirror = evas_object_image_filled_add(e_comp->evas);
@@ -322,6 +323,9 @@ qs_key(E_Object* obj EINA_UNUSED, const char* params EINA_UNUSED)
       evas_object_smart_callback_add(
         pup, "block,clicked", _block_clicked_cb, mirror);
 
+		
+      evas_object_geometry_get(content, 0, 0, &w, &h);
+      evas_object_size_hint_min_set(mirror, w, h);
       elm_object_content_set(pup, mirror);
 
       evas_object_resize(pup, zone->w, zone->h);
