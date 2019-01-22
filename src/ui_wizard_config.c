@@ -128,9 +128,9 @@ _set_relative(void* data,
 	cs_source->enabled = EINA_TRUE;
   }
   
-//   e_randr2_config_save();
-//   e_randr2_config_apply();
-//   _block_clicked_cb(NULL, NULL, NULL);
+  e_randr2_config_save();
+  e_randr2_config_apply();
+  _block_clicked_cb(NULL, NULL, NULL);
 
 	// TODO REOPEN QUICKSCREEN
 	//   sleep(5);
@@ -343,12 +343,12 @@ _on_keydown(void *data EINA_UNUSED,
 		  
 		  if(strcmp((char*)data, "CLONE") == 0)
 			{
-// 				_set_relative((void*)E_RANDR2_RELATIVE_CLONE, NULL, NULL);
+				_set_relative((void*)E_RANDR2_RELATIVE_CLONE, NULL, NULL);
 			}
 		  if(strcmp((char*)data, "LEFT_OF") == 0)
 		  {
 			  _set_relative((void*)E_RANDR2_RELATIVE_TO_LEFT, NULL, NULL);
-		  }/*
+		  }
 		  else if(strcmp((char*)data, "RIGHT_OF") == 0)
 		  {
 			  _set_relative((void*)E_RANDR2_RELATIVE_TO_RIGHT, NULL, NULL);
@@ -368,7 +368,7 @@ _on_keydown(void *data EINA_UNUSED,
 		  else if(strcmp((char*)data, "TARGET_POWER_OFF") == 0)
 		  {
 			  _set_target_power_off(NULL, NULL, NULL);
-		  }*/
+		  }
 
 		  return;
      }
@@ -1253,7 +1253,7 @@ _content_expand(Evas_Object* parent)
   evas_object_color_set(bt_above, r1, g1, b1, a1);
   evas_object_size_hint_weight_set(bt_above, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_above, EVAS_HINT_FILL, EVAS_HINT_FILL);
-//   evas_object_smart_callback_add(bt_above, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_ABOVE);
+  evas_object_smart_callback_add(bt_above, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_ABOVE);
   evas_object_smart_callback_add(bt_above, "pressed", _focus_in_cb, ic);
   evas_object_smart_callback_add(bt_above, "unpressed", _focus_out_cb, ic);
   evas_object_smart_callback_add(bt_above, "focused", _focus_in_cb, ic);
@@ -1278,7 +1278,7 @@ _content_expand(Evas_Object* parent)
   evas_object_color_set(bt_leftof, r1, g1, b1, a1);
   evas_object_size_hint_weight_set(bt_leftof, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_leftof, EVAS_HINT_FILL, EVAS_HINT_FILL);
-//   evas_object_smart_callback_add(bt_leftof, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_LEFT);
+  evas_object_smart_callback_add(bt_leftof, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_LEFT);
   evas_object_smart_callback_add(bt_leftof, "pressed", _focus_in_cb, ic);
   evas_object_smart_callback_add(bt_leftof, "unpressed", _focus_out_cb, ic);
   evas_object_smart_callback_add(bt_leftof, "focused", _focus_in_cb, ic);
@@ -1329,7 +1329,7 @@ _content_expand(Evas_Object* parent)
   evas_object_color_set(bt_rightof, r1, g1, b1, a1);
   evas_object_size_hint_weight_set(bt_rightof, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
   evas_object_size_hint_align_set(bt_rightof, EVAS_HINT_FILL, EVAS_HINT_FILL);
-//   evas_object_smart_callback_add(bt_rightof, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_RIGHT);
+  evas_object_smart_callback_add(bt_rightof, "clicked", _set_relative, (void*)E_RANDR2_RELATIVE_TO_RIGHT);
   evas_object_smart_callback_add(bt_rightof, "pressed", _focus_in_cb, ic);
   evas_object_smart_callback_add(bt_rightof, "unpressed", _focus_out_cb, ic);
   evas_object_smart_callback_add(bt_rightof, "focused", _focus_in_cb, ic);
