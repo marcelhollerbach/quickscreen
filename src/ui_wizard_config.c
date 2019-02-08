@@ -147,11 +147,12 @@ _set_target_power_off(void* data EINA_UNUSED,
 
   cs = _screen_config_randr_id_find(target_id);
 
-  if (!cs) {
-    cs = calloc(1, sizeof(E_Config_Randr2_Screen));
-    cs->id = eina_stringshare_add(target_id);
-    e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs);
-  }
+   if (!cs) 
+      {
+         cs = calloc(1, sizeof(E_Config_Randr2_Screen));
+         cs->id = eina_stringshare_add(target_id);
+         e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs);
+      }
 
   eina_stringshare_replace(&cs->rel_to, target_id);
 
@@ -161,11 +162,12 @@ _set_target_power_off(void* data EINA_UNUSED,
   cs->enabled = EINA_FALSE;
   cs2 = _screen_config_randr_id_find(source_id);
 
-  if (!cs2) {
-    cs2 = calloc(1, sizeof(E_Config_Randr2_Screen));
-    cs2->id = eina_stringshare_add(source_id);
-    e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs2);
-  }
+   if (!cs2)
+   {
+      cs2 = calloc(1, sizeof(E_Config_Randr2_Screen));
+      cs2->id = eina_stringshare_add(source_id);
+      e_randr2_cfg->screens = eina_list_append(e_randr2_cfg->screens, cs2);
+   }
 
   eina_stringshare_replace(&cs2->rel_to, source_id);
 
@@ -1306,13 +1308,6 @@ _content_expand(Evas_Object* parent)
 //   evas_object_color_set(rect, r2, g2, b2, a2);
 //   elm_table_pack(tb_c, rect, 1, 1, 1, 1);
 //   evas_object_show(rect);
-  
-  lbl = elm_label_add(parent);
-  evas_object_size_hint_weight_set(lbl, EVAS_HINT_EXPAND, EVAS_HINT_EXPAND);
-  evas_object_size_hint_align_set(lbl, 0.5, 0.5);
-  elm_object_text_set(lbl, target_device);
-  elm_table_pack(tb_c, lbl, 1, 1, 1, 1);
-  evas_object_show(lbl);
 
   ///////////
 

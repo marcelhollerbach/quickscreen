@@ -18,7 +18,8 @@ _block_clicked_cb(void* data EINA_UNUSED,
                   Evas_Object* obj,
                   void* event_info EINA_UNUSED)
 {
-  Evas_Object *pup, *mirror /*, *popup_screeninfo*/;
+ printf("BLOCK CLICKED PRESSED\n");
+  Evas_Object *pup, *mirror;
 
   evas_object_del(popup);
   popup = NULL;
