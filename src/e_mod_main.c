@@ -118,6 +118,7 @@ show_screeninfos()
     evas_object_layer_set(popup_screeninfo, E_LAYER_POPUP);
     evas_object_event_callback_add(
       popup_screeninfo, EVAS_CALLBACK_KEY_DOWN, key_down, popup_screeninfo);
+    evas_object_pass_events_set(popup_screeninfo, EINA_TRUE);
 
     EINA_LIST_FOREACH(e_comp->zones, l2, zone)
     {
